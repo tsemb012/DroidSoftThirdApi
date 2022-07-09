@@ -2,7 +2,8 @@
 
 one:
   name: MyString
-  age: 
+  email:
+  age:
   sexuality: MyString
   activityArea: 
   preference: one
@@ -10,6 +11,7 @@ one:
 
 two:
   name: MyString
+  email:
   age: 
   sexuality: MyString
   activityArea: 
