@@ -10,17 +10,25 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    @user = User.find(params[:id])
     render json: @user
   end
 
+  def new
+    #@user = User.new　＃APIでなければ、ここでビューを返す。
+  end
+
   # POST /users
-  def create
+  def create #TODO ここでAuthenticity_tokenを入れてセキュリティを工場させる。
     @user = User.new(user_params)
 
     if @user.save
       render json: @user, status: :created, location: @user
+        # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
+        # TODO 成功と共にAndroidの画面を切り替える。
     else
       render json: @user.errors, status: :unprocessable_entity
+      #ここでエラーを返しているので、Android側ではメッセージを出して再度認証してもらうのが正解。
     end
   end
 
@@ -46,8 +54,8 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :age, :sexuality, :email
-      #                             :activityArea, :preference_id, :setting_id
-      )
+      params[:user].permit(:name, :email, :password, :password_confirmation)# おそらくここが間違っているからpostが通らない。
+      #                             :age, :sexuality, :activityArea, :preference_id, :setting_id
+
     end
 end
