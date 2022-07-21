@@ -23,6 +23,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      log_in @user
       render json: @user, status: :created, location: @user
         # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
         # TODO 成功と共にAndroidの画面を切り替える。
