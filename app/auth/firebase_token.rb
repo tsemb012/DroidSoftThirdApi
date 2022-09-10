@@ -5,7 +5,7 @@ class FirebaseToken
   PUBLIC_KEY_URL = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'.freeze
 
   def initialize(token)
-    @token = token
+    @token = token.split(' ').last
   end
 
   def verify(firebase_project_id)

@@ -20,15 +20,10 @@ class UsersController < ApplicationController
 
   #POST/ sign_up
   def sign_up
-    token = FirebaseToken.new(params[:token_id])
-    firebase_project_id = 'droidsoftthird-2cc9b'#TODO プロジェクト名もAndroid側から取得できると良い。
-    payload = token.verify(firebase_project_id)
-    user_id = payload["user_id"]
-    email = payload['email']
-    if User.find_by(user_id: user_id)
+    if User.find_by(user_id: self.user_id)
       render json: { error: { messages: ["すでに登録されています"] } }, status: :unauthorized
     else
-      create(user_id, email)
+      create(self.user_id, self.email)
     end
   end
 

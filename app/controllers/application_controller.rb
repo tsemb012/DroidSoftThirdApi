@@ -1,16 +1,17 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include SessionsHelper
-=begin # TODO ここのコードはログイン後は使えるけど、サインアップができるまでは無くしておく。なぜならユーザーがDBに入ってないと使えないから
-  include FirebaseAuth
   before_action :authenticate
-
+  attr_accessor :user_id, :email
   class AuthenticationError < StandardError; end
   rescue_from AuthenticationError, with: :not_authenticated
 
   def authenticate
-    payload = decode(request.headers["Authorization"]&.split&.last)
-    raise AuthenticationError unless current_user(payload["user_id"])
+    token = FirebaseToken.new(request.headers["Authorization"])
+    firebase_project_id = 'droidsoftthird-2cc9b'
+    payload = token.verify(firebase_project_id)
+    @user_id = payload["user_id"]
+    @email = payload["email"]
   end
 
   def current_user(user_id = nil)
@@ -21,5 +22,4 @@ class ApplicationController < ActionController::API
   def not_authenticated
     render json: { error: { messages: ["ログインしてください"] } }, status: :unauthorized
   end
-=end
 end
