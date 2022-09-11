@@ -1,4 +1,4 @@
-rails generate model ArticleUser article:references user:referencesclass CreateGroups < ActiveRecord::Migration[6.0]
+class CreateGroups < ActiveRecord::Migration[6.0]
   def change
     create_table :groups do |t|
       t.string :image_url
