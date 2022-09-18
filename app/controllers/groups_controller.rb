@@ -15,10 +15,10 @@ class GroupsController < ApplicationController
 
   # POST /groups
   def create
-    @group = Group.new(group_params)
-
+    @group = Group.new
+    @group.update(group_params)
     if @group.save
-      render json: @group, status: :created, location: @group
+      render json: { message: "success" }, status: :created, location: @group #TODO Jsonの書き方を洗練させていく。
     else
       render json: @group.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class GroupsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def group_params
-      params.require(:group).permit(:image_url, :name, :introduction, :type, :prefecture, :city, :facility_environment, :string, :frequency_basis, :frequency_times, :max_age, :min_age, :max_number, :min_number, :is_same_sexuality)
+      params.require(:group).permit(:image_url, :name, :introduction, :type, :prefecture, :city, :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age, :max_number, :min_number, :is_same_sexuality)
     end
 end
