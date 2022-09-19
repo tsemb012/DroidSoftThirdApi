@@ -18,18 +18,12 @@ class UsersController < ApplicationController
     #@user = User.new　＃APIでなければ、ここでビューを返す。
   end
 
-  # POST /users
-  def create #TODO ここでAuthenticity_tokenを入れてセキュリティを工場させる。
-    @user = User.new(user_params)
-
-    if @user.save
-      log_in @user
-      render json: @user, status: :created, location: @user
-        # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
-        # TODO 成功と共にAndroidの画面を切り替える。
+  #POST/ sign_up
+  def sign_up
+    if User.find_by(user_id: self.user_id)
+      render json: { error: { messages: ["すでに登録されています"] } }, status: :unauthorized
     else
-      render json: @user.errors, status: :unprocessable_entity
-      #ここでエラーを返しているので、Android側ではメッセージを出して再度認証してもらうのが正解。
+      create(self.user_id, self.email)
     end
   end
 
@@ -59,4 +53,19 @@ class UsersController < ApplicationController
       #                             :age, :sexuality, :activityArea, :preference_id, :setting_id
 
     end
+
+  private
+  def create(user_id, email)
+    @user = User.new(user_id: user_id, email: email)
+    if @user.save
+      log_in @user
+      render json: @user, status: :created, location: @user
+      # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
+      # TODO 成功と共にAndroidの画面を切り替える。
+    else
+      render json: @user.errors, status: :unprocessable_entity
+      #ここでエラーを返しているので、Android側ではメッセージを出して再度認証してもらうのが正解。
+    end
+  end
+
 end

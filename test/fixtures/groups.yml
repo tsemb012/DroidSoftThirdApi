@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  image_url: MyString
+  name: MyString
+  introduction: MyText
+  type: 
+  prefecture: MyString
+  city: MyString
+  facility_environment: MyString
+  string: MyString
+  frequency_basis: MyString
+  frequency_times: 1
+  max_age: 1
+  min_age: 1
+  max_number: 1
+  min_number: 1
+  is_same_sexuality: false
+
+two:
+  image_url: MyString
+  name: MyString
+  introduction: MyText
+  type: 
+  prefecture: MyString
+  city: MyString
+  facility_environment: MyString
+  string: MyString
+  frequency_basis: MyString
+  frequency_times: 1
+  max_age: 1
+  min_age: 1
+  max_number: 1
+  min_number: 1
+  is_same_sexuality: false

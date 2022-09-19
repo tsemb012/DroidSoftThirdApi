@@ -7,6 +7,15 @@ gem 'rails', '~> 6.0.4'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
+# User jwt for authentication
+gem 'jwt'
+
+# Use Httparty for HTTP requests
+gem 'httparty'
+
+# Use Kaminari for pagination
+gem 'kaminari'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
