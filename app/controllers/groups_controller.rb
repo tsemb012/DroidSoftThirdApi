@@ -3,8 +3,8 @@ class GroupsController < ApplicationController
 
   # GET /groups
   def index
-    @groups = Group.all
-
+    page = params[:page]
+    @groups = Group.page(page).per(4)
     render json: @groups
   end
 
@@ -46,6 +46,6 @@ class GroupsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def group_params
-      params.require(:group).permit(:image_url, :name, :introduction, :type, :prefecture, :city, :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age, :max_number, :min_number, :is_same_sexuality)
+      params.require(:group).permit(:host_id, :image_url, :name, :introduction, :group_type, :prefecture, :city, :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age, :max_number, :min_number, :is_same_sexuality)
     end
 end

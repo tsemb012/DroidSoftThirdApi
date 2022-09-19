@@ -24,7 +24,7 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update group" do
-    patch group_url(@group), params: { group: { city: @group.city, facility_environment: @group.facility_environment, frequency_basis: @group.frequency_basis, frequency_times: @group.frequency_times, image_url: @group.image_url, introduction: @group.introduction, is_same_sexuality: @group.is_same_sexuality, max_age: @group.max_age, max_number: @group.max_number, min_age: @group.min_age, min_number: @group.min_number, name: @group.name, prefecture: @group.prefecture, string: @group.string, type: @group.type } }, as: :json
+    patch group_url(@group), params: { group: { city: @group.city, facility_environment: @group.facility_environment, frequency_basis: @group.frequency_basis, frequency_times: @group.frequency_times, image_url: @group.image_url, introduction: @group.introduction, is_same_sexuality: @group.is_same_sexuality, max_age: @group.max_age, max_number: @group.max_number, min_age: @group.min_age, min_number: @group.min_number, name: @group.name, prefecture: @group.prefecture, string: @group.string, group_type: @group.group_type } }, as: :json
     assert_response 200
   end
 

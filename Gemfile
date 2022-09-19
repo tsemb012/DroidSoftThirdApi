@@ -13,6 +13,9 @@ gem 'jwt'
 # Use Httparty for HTTP requests
 gem 'httparty'
 
+# Use Kaminari for pagination
+gem 'kaminari'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
