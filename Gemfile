@@ -16,6 +16,9 @@ gem 'httparty'
 # Use Kaminari for pagination
 gem 'kaminari'
 
+# User jbuilder for json
+gem 'jbuilder'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
