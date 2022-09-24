@@ -56,6 +56,4 @@ ActiveRecord::Schema.define(version: 2022_09_19_031624) do
     t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
-  add_foreign_key "participations", "groups"
-  add_foreign_key "participations", "users"
 end
