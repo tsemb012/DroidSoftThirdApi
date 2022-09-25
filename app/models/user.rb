@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :groups, through: :participations
 
   before_save { self.email = email.downcase }
-  self.primary_key = :user_id
+  #self.primary_key = :user_id
   #validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email,
