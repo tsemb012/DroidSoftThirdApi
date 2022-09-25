@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :update, :destroy]
+  before_action :set_group, only: [:show, :update, :destroy, :participate]
 
   # GET /groups
   def index
@@ -11,7 +11,19 @@ class GroupsController < ApplicationController
   # GET /groups/1
   def show
     group = Group.find(params[:id])
-    render json: group.as_json.merge({users: group.users})
+    render json: group.as_json.merge({members: group.users})
+  end
+
+  #PATCH /groups/1
+  def participate
+    group = Group.find(params[:id])
+    user = User.find_by user_id: params[:user_id]
+    if !group.users.include?(user)
+      group.users << user
+      render json: { message: "success" }, status: :created
+    else
+      render json: { messages: "すでに参加しています" }, status: 400 # 適切なステータスに変更する
+    end
   end
 
   # POST /groups
