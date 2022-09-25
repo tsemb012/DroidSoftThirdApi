@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
   end
 
   def current_user(user_id = nil)
-    @current_user ||= User.find_by(uid: user_id)
+    @current_user ||= User.find_by(id: user_id)
   end
 
   private
