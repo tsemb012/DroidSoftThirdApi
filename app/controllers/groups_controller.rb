@@ -10,17 +10,20 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
-    render json: @group
+    group = Group.find(params[:id])
+    render json: group.as_json.merge({users: group.users})
   end
 
   # POST /groups
   def create
-    @group = Group.new
-    @group.update(group_params)
-    if @group.save
-      render json: { message: "success" }, status: :created, location: @group #TODO Jsonの書き方を洗練させていく。
+    group = Group.new
+    group.update(group_params)
+    if group.save
+      user = User.find_by user_id: group[:host_id]
+      group.users << user
+      render json: { message: "success" }, status: :created
     else
-      render json: @group.errors, status: :unprocessable_entity
+      render json: group.errors, status: :unprocessable_entity
     end
   end
 
