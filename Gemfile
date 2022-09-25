@@ -16,6 +16,12 @@ gem 'httparty'
 # Use Kaminari for pagination
 gem 'kaminari'
 
+# User jbuilder for json
+gem 'jbuilder'
+
+# User active_model_serializers for json
+gem 'active_model_serializers'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
@@ -47,9 +53,8 @@ end
 group :development do
   gem 'listen', '~> 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

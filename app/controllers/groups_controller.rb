@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :update, :destroy]
+  before_action :set_group, only: [:show, :update, :destroy, :participate]
 
   # GET /groups
   def index
@@ -10,17 +10,32 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
-    render json: @group
+    group = Group.find(params[:id])
+    render json: group.as_json.merge({members: group.users})
+  end
+
+  #PATCH /groups/1
+  def participate
+    group = Group.find(params[:id])
+    user = User.find_by user_id: params[:user_id]
+    if !group.users.include?(user)
+      group.users << user
+      render json: { message: "success" }, status: :created
+    else
+      render json: { messages: "すでに参加しています" }, status: 400 # 適切なステータスに変更する
+    end
   end
 
   # POST /groups
   def create
-    @group = Group.new
-    @group.update(group_params)
-    if @group.save
-      render json: { message: "success" }, status: :created, location: @group #TODO Jsonの書き方を洗練させていく。
+    group = Group.new
+    group.update(group_params)
+    if group.save
+      user = User.find_by user_id: group[:host_id]
+      group.users << user
+      render json: { message: "success" }, status: :created
     else
-      render json: @group.errors, status: :unprocessable_entity
+      render json: group.errors, status: :unprocessable_entity
     end
   end
 
