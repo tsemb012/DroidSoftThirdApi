@@ -19,6 +19,9 @@ gem 'kaminari'
 # User jbuilder for json
 gem 'jbuilder'
 
+# User active_model_serializers for json
+gem 'active_model_serializers'
+
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
