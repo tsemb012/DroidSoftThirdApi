@@ -2,10 +2,18 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy, :participate]
 
   # GET /groups
-  def index
-    page = params[:page]
-    @groups = Group.page(page).per(4)
-    render json: @groups
+  def index #TODO 条件分岐をわかりやすくする。
+    if (page = params[:page])#指定されたページのアイテムを取得する
+      groups = Group.page(page).per(4)
+      render json: groups
+    else
+      if (user_id = params[:user_id])#指定されたユーザーの参加しているグループを取得する
+        joined_group = Group.all.select{|group| group.users.find_by(user_id: user_id)}
+        render json: joined_group
+      else
+        render json: Group.all #全てのグループを取得する
+      end
+    end
   end
 
   # GET /groups/1
