@@ -16,6 +16,9 @@ gem 'httparty'
 # Use Kaminari for pagination
 gem 'kaminari'
 
+# Use pry-rails for debugging
+gem 'pry-rails'
+
 # User jbuilder for json
 gem 'jbuilder'
 
