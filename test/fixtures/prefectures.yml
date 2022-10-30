@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  prefecture_code: 1
+  name: MyString
+  spell: MyString
+
+two:
+  prefecture_code: 1
+  name: MyString
+  spell: MyString

@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_29_153408) do
+ActiveRecord::Schema.define(version: 2022_10_30_052839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cities", force: :cascade do |t|
+    t.integer "city_code"
+    t.string "name"
+    t.string "spell"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "image_url"
@@ -42,6 +52,18 @@ ActiveRecord::Schema.define(version: 2022_10_29_153408) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["group_id"], name: "index_participations_on_group_id"
     t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
+  create_table "prefectures", force: :cascade do |t|
+    t.integer "prefecture_code"
+    t.string "name"
+    t.string "spell"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "capital_name"
+    t.string "capital_spell"
+    t.float "capital_latitude"
+    t.float "capital_longitude"
   end
 
   create_table "users", force: :cascade do |t|
