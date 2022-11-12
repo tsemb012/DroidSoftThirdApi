@@ -10,7 +10,6 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.find(params[:id])
     render json: @user
   end
 
@@ -20,10 +19,11 @@ class UsersController < ApplicationController
 
   #POST/ sign_up
   def sign_up
-    if User.find_by(user_id: self.user_id)
+    user_id = params[:user_id]
+    if User.find_by(user_id: user_id)
       render json: { error: { messages: ["すでに登録されています"] } }, status: :unauthorized
     else
-      create(self.user_id, self.email)
+      create(user_id, self.email)
     end
   end
 
@@ -44,22 +44,19 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find_by(user_id: params[:user_id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params[:user].permit(:name, :email, :password, :password_confirmation)# おそらくここが間違っているからpostが通らない。
-      #                             :age, :sexuality, :activityArea, :preference_id, :setting_id
-
+      params.require(:user).permit(:user_name, :age, :gender, :user_id, :user_image, :comment)# おそらくここが間違っているからpostが通らない。
     end
 
-  private
   def create(user_id, email)
     @user = User.new(user_id: user_id, email: email)
     if @user.save
       log_in @user
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created#, location: @user
       # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
       # TODO 成功と共にAndroidの画面を切り替える。
     else
