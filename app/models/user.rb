@@ -3,6 +3,9 @@ class User < ApplicationRecord
   has_many :participations
   has_many :groups, through: :participations
 
+  has_one :prefecture
+  has_one :city
+
   before_save { self.email = email.downcase }
   #self.primary_key = :user_id
   #validates :name,  presence: true, length: { maximum: 50 }

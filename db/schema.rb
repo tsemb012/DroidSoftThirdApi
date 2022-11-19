@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_19_031624) do
+ActiveRecord::Schema.define(version: 2022_11_12_164403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cities", force: :cascade do |t|
+    t.integer "city_code"
+    t.string "name"
+    t.string "spell"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "image_url"
@@ -44,14 +55,29 @@ ActiveRecord::Schema.define(version: 2022_09_19_031624) do
     t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "prefectures", force: :cascade do |t|
+    t.integer "prefecture_code"
     t.string "name"
+    t.string "spell"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "capital_name"
+    t.string "capital_spell"
+    t.float "capital_latitude"
+    t.float "capital_longitude"
+    t.integer "user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "user_name"
     t.integer "age"
-    t.string "sexuality"
+    t.string "gender"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email"
     t.string "user_id"
+    t.string "user_image"
+    t.string "comment"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
