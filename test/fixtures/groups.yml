@@ -4,11 +4,10 @@ one:
   image_url: MyString
   name: MyString
   introduction: MyText
-  type: 
+  group_type:
   prefecture: MyString
   city: MyString
   facility_environment: MyString
-  string: MyString
   frequency_basis: MyString
   frequency_times: 1
   max_age: 1
@@ -21,11 +20,10 @@ two:
   image_url: MyString
   name: MyString
   introduction: MyText
-  type: 
+  group_type:
   prefecture: MyString
   city: MyString
   facility_environment: MyString
-  string: MyString
   frequency_basis: MyString
   frequency_times: 1
   max_age: 1
