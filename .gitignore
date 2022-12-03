@@ -28,3 +28,6 @@
 
 # Ignore environment variables
 /.env
+
+# Ignore library
+/vendor/bundle
