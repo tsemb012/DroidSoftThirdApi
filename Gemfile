@@ -13,6 +13,9 @@ gem 'jwt'
 # Use Httparty for HTTP requests
 gem 'httparty'
 
+# Use Dotenv for environment variables
+gem 'dotenv-rails'
+
 # Use Kaminari for pagination
 gem 'kaminari'
 
