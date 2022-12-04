@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
   patch '/groups/:id/participate', to: 'groups#participate'
+  get 'maps' => 'maps#show'
 end
