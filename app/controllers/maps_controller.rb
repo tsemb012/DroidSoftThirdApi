@@ -18,7 +18,7 @@ class MapsController < ApplicationController
                          fields: FIELDS,
                          input: params[:input].as_json,
                          language: params[:language].as_json,
-                         locationbias: params[:south_lat] + ',' + params[:west_lng] + '|' + params[:north_lat] + ',' + params[:west_lng],
+                         locationbias: 'rectangle:' + params[:south_lat] + ',' + params[:west_lng] + '|' + params[:north_lat] + ',' + params[:west_lng],
                          key: ENV['GOOGLE_API_KEY'],
                          limit: 10
                          # 最大20件であれば制限する必要はないかも。
