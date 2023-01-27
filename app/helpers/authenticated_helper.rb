@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 module AuthenticatedHelper
   def authenticate_stub
     # 渡したいインスタンス変数を定義

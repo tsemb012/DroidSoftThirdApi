@@ -12,25 +12,18 @@ class MapsController < ApplicationController
     end
   end
 
-  def search_query
+  def search_query # ピンポイント検索
     response = @conn.get 'findplacefromtext/json',
                          inputtype: TEXT_QUERY,
                          fields: FIELDS,
-                         input: params[:input].as_json,
-                         language: params[:language].as_json,
+                         input: params[:input],
+                         language: params[:language],
                          locationbias: 'rectangle:' + params[:south_lat] + ',' + params[:west_lng] + '|' + params[:north_lat] + ',' + params[:west_lng],
-                         key: ENV['GOOGLE_API_KEY'],
-                         limit: 10
-                         # 最大20件であれば制限する必要はないかも。
-
-    response_code = response.status
-    response_headers = response.headers
+                         key: ENV['GOOGLE_API_KEY']
     response_body_json = response.body
     data = JSON.parse(response_body_json)
     candidates = data["candidates"]
-    json1 = JSON.generate(candidates)
-    json2 = JSON.pretty_generate(candidates)
-    render json: candidates # 把握できなくなる　→　ので、Selializer　→　GitLabのレポジトリ　→　コードを見にいく　→　
+    render json: candidates
   end
 
   def search_nearby

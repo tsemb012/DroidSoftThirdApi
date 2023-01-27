@@ -13,6 +13,9 @@ gem 'jwt'
 # Use Httparty for HTTP requests
 gem 'httparty'
 
+# Use Faraday for HTTP requests
+gem 'faraday'
+
 # Use Dotenv for environment variables
 gem 'dotenv-rails'
 
