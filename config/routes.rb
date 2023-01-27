@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
   patch '/groups/:id/participate', to: 'groups#participate'
-  get 'maps' => 'maps#show'
+  get 'maps/search_query' => 'maps#search_query'
+  get 'maps/near_by' => 'maps#search_nearby'
+  get 'maps/text' => 'maps#search_text'
 end
