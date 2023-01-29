@@ -38,6 +38,40 @@ RSpec.describe MapsController, type: :request do
     end
   end
 
+  context 'GET /search_text' do
+    # 以下のサイトを見て「テキスト検索」を実行する
+    # https://developers.google.com/maps/documentation/places/web-service/search-text
+    # Typeは下記サイトを参照
+    # https://developers.google.com/maps/documentation/places/web-service/supported_types
+    # 使用できるtypeは全てを満たさないので、下記の方法で対応を検討する。
+    # スクレイピングによる情報の取得。キーワードの組み合わせによる検索
+    it 'should return 200' do
+      get '/maps/text#search_text',
+          params: {
+            query: '東京都',
+            type: 'library',
+            keyword: '図書館',
+          }
+      json = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+    end
+
+    it 'should return 200' do
+      get '/maps/text#search_text',
+          params: {
+            query: '東京都',
+            type: 'restaurant',
+            keyword: 'ラーメン',
+            radius: '500',
+            region: 'jp',
+            location: '35.658581,139.745433',
+          }
+      json = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+    end
+
+  end
+
   context 'GET /search_nearby' do
     # 以下のサイトを見て「近くの場所を検索」を実行する
     # https://developers.google.com/maps/documentation/places/web-service/search-nearby
@@ -77,39 +111,7 @@ Nearby Search リクエストを keyword（または name）パラメータを�
 =end
   end
 
-  context 'GET /search_text' do
-    # 以下のサイトを見て「テキスト検索」を実行する
-    # https://developers.google.com/maps/documentation/places/web-service/search-text
-    # Typeは下記サイトを参照
-    # https://developers.google.com/maps/documentation/places/web-service/supported_types
-    # 使用できるtypeは全てを満たさないので、下記の方法で対応を検討する。
-    # スクレイピングによる情報の取得。キーワードの組み合わせによる検索
-    it 'should return 200' do
-      get '/maps/text#search_text',
-          params: {
-            query: '東京都',
-            type: 'library',
-            keyword: '図書館',
-          }
-      json = JSON.parse(response.body)
-      expect(response.status).to eq(200)
-    end
 
-    it 'should return 200' do
-      get '/maps/text#search_text',
-          params: {
-            query: '東京都',
-            type: 'restaurant',
-            keyword: 'ラーメン',
-            radius: '500',
-            region: 'jp',
-            location: '35.658581,139.745433',
-          }
-      json = JSON.parse(response.body)
-      expect(response.status).to eq(200)
-    end
-
-  end
 
   context  do
 

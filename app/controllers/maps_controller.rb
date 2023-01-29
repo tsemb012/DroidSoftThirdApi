@@ -12,7 +12,7 @@ class MapsController < ApplicationController
     end
   end
 
-  def search_query # ピンポイント検索
+  def search_individual # ピンポイント検索
     response = @conn.get 'findplacefromtext/json',
                          inputtype: TEXT_QUERY,
                          fields: FIELDS,
@@ -23,6 +23,21 @@ class MapsController < ApplicationController
     response_body_json = response.body
     data = JSON.parse(response_body_json)
     candidates = data["candidates"]
+    render json: candidates
+  end
+
+  def search_by_text
+    response = @conn.get 'textsearch/json',
+                         query: params[:query],
+                         location: params[:center_lat] + ',' + params[:center_lng],
+                         radius: params[:radius],
+                         type: params[:type],
+                         region: params[:region],
+                         language: params[:language],
+                         key: ENV['GOOGLE_API_KEY']
+    response_body_json = response.body
+    data = JSON.parse(response_body_json)
+    candidates = data["results"]
     render json: candidates
   end
 
@@ -39,17 +54,6 @@ class MapsController < ApplicationController
     render json: response.body
   end
 
-  def search_text
-    response = @conn.get 'textsearch/json',
-                         query: params[:query].as_json,
-                         location: params[:location].as_json,
-                         radius: params[:radius].as_json,
-                         type: params[:type].as_json,
-                         region: params[:region].as_json,
-                         language: 'ja',
-                         key: ENV['GOOGLE_API_KEY']
-    render json: response.body
-  end
 end
 
 =begin
