@@ -1,7 +1,8 @@
 class MapsController < ApplicationController
 
   TEXT_QUERY = "textquery"
-  FIELDS = 'name,place_id,geometry,types,photos,formatted_address,plus_code'
+  INDIVIDUAL_FIELDS = 'name,place_id,geometry,types,photos,formatted_address,plus_code'
+  DETAIL_FIELD = 'name, type, formatted_address, geometry, icon_background_color, url, photo, address_component, adr_address, business_status'
 
   def initialize
     @conn = Faraday.new(url: 'https://maps.googleapis.com/maps/api/place/') do |builder|
@@ -15,7 +16,7 @@ class MapsController < ApplicationController
   def search_individual # ピンポイント検索
     response = @conn.get 'findplacefromtext/json',
                          inputtype: TEXT_QUERY,
-                         fields: FIELDS,
+                         fields: INDIVIDUAL_FIELDS,
                          input: params[:input],
                          language: params[:language],
                          locationbias: 'rectangle:' + params[:south_lat] + ',' + params[:west_lng] + '|' + params[:north_lat] + ',' + params[:west_lng],
@@ -43,15 +44,27 @@ class MapsController < ApplicationController
 
   def search_nearby
     response = @conn.get 'nearbysearch/json',
-                         location: params[:location].as_json,
-                         radius: params[:radius].as_json,
-                         type: params[:type].as_json,
-                         keyword: params[:keyword].as_json,
-
-                         #pagetoken: params[:pagetoken].as_json,
-                         language: 'ja',
+                         location: params[:center_lat] + "," + params[:center_lng],
+                         radius: params[:radius],
+                         type: params[:type],
+                         language: params[:language],
                          key: ENV['GOOGLE_API_KEY']
-    render json: response.body
+    response_body_json = response.body
+    data = JSON.parse(response_body_json)
+    candidates = data["results"]
+    render json: candidates
+  end
+
+  def fetch_place_detail
+    response = @conn.get 'details/json',
+                         place_id: params[:place_id],
+                         fields: DETAIL_FIELD,
+                         language: params[:language],
+                         key: ENV['GOOGLE_API_KEY']
+    response_body_json = response.body
+    data = JSON.parse(response_body_json)
+    candidates = data["result"]
+    render json: candidates
   end
 
 end

@@ -5,7 +5,7 @@ RSpec.describe MapsController, type: :request do
 
   let(:headers) { { CONTENT_TYPE: 'application/json', Authorization: 'hoge_token' } }
   before do
-    #authenticate_stub
+    authenticate_stub
 
   end
 
@@ -109,6 +109,20 @@ RSpec.describe MapsController, type: :request do
 Nearby Search リクエストを keyword（または name）パラメータを指定せずに使用すると、付近の施設を検索できます。サポートされているいずれかの場所タイプ（表 1: 場所タイプを参照）と組み合わせた type パラメータも使用することをおすすめします。これにより、query パラメータが空または欠落している Text Search リクエストの現在の動作に最も近い動作となります。
 これが、場所指定のもの　→　
 =end
+  end
+
+  context 'GET /maps/place_detail' do
+    # 以下のサイトを見て「場所の詳細情報を取得」を実行する
+    # https://developers.google.com/maps/documentation/places/web-service/details
+    it 'should return 200' do
+      get '/maps/place_detail#place_detail',
+          params: {
+            place_id: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+            fields: 'name,formatted_address,geometry,icon,opening_hours,photos,place_id,plus_code,types'
+          }
+      json = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+    end
   end
 
 
