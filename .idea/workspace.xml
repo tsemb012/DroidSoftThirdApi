@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 Placeモデルの追加">
+    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 EventとPlaceの1対1の依存関係を追加するように">
       <change beforePath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
@@ -139,7 +139,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676722589298</updated>
-      <workItem from="1676722591017" duration="2551000" />
+      <workItem from="1676722591017" duration="3110000" />
     </task>
     <task id="LOCAL-00001" summary="DST-446 Eventクラスの作成">
       <created>1676722709550</created>
@@ -162,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676724742629</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="DST-446 EventとPlaceの1対1の依存関係を追加するように">
+      <created>1676726009882</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1676726009882</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +202,7 @@
     <MESSAGE value="DST-446 Eventクラスの作成" />
     <MESSAGE value="DST-446 controller修正" />
     <MESSAGE value="DST-446 Placeモデルの追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="DST-446 Placeモデルの追加" />
+    <MESSAGE value="DST-446 EventとPlaceの1対1の依存関係を追加するように" />
+    <option name="LAST_COMMIT_MESSAGE" value="DST-446 EventとPlaceの1対1の依存関係を追加するように" />
   </component>
 </project>
