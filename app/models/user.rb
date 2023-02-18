@@ -1,10 +1,14 @@
 class User < ApplicationRecord
   #before_create :set_uuid
-  has_many :participations
-  has_many :groups, through: :participations
 
   has_one :prefecture
   has_one :city
+
+  has_many :participations
+  has_many :groups, through: :participations
+
+  has_many :registrations
+  has_many :events, through: :registrations
 
   before_save { self.email = email.downcase }
   #self.primary_key = :user_id
