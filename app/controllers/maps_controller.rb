@@ -2,7 +2,7 @@ class MapsController < ApplicationController
 
   TEXT_QUERY = "textquery"
   INDIVIDUAL_FIELDS = 'name,place_id,geometry,types,photos,formatted_address,plus_code'
-  DETAIL_FIELD = 'name, type, formatted_address, geometry, icon_background_color, url, photo, address_component, adr_address, business_status'
+  DETAIL_FIELD = 'name,type,place_id,formatted_address,geometry,icon_background_color,url,photo,address_component,plus_code'
 
   def initialize
     @conn = Faraday.new(url: 'https://maps.googleapis.com/maps/api/place/') do |builder|

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe MapsController, type: :request do
-  include AuthenticatedHelper
+  #include AuthenticatedHelper
 
   let(:headers) { { CONTENT_TYPE: 'application/json', Authorization: 'hoge_token' } }
   before do
-    authenticate_stub
+    #authenticate_stub
 
   end
 
@@ -13,12 +13,16 @@ RSpec.describe MapsController, type: :request do
     # Do nothing
   end
 
-  context 'GET /search_query' do #曖昧検索の範囲をどこまでひろげのか？
+  context 'GET /search_individual' do #曖昧検索の範囲をどこまでひろげのか？
     # 以下のサイトを見て「場所の検索」を実行する
     # https://developers.google.com/maps/documentation/places/web-service/search-find-place#maps_http_places_findplacefromtext_locationbias-rb
     it 'should return 200' do
-      get '/maps/search_query#search_query', params: {
+      get '/maps/search_individual#search_individual', params: {
         input: 'ラーメン',
+        south_lat: 35.658581,
+        west_lng: 139.745433,
+        north_lat: 35.659281,
+        east_lng: 139.746433,
         view_port: {
               south_west: {
                   south: 35.658581,
@@ -38,7 +42,7 @@ RSpec.describe MapsController, type: :request do
     end
   end
 
-  context 'GET /search_text' do
+  context 'GET /search_by_text' do
     # 以下のサイトを見て「テキスト検索」を実行する
     # https://developers.google.com/maps/documentation/places/web-service/search-text
     # Typeは下記サイトを参照
@@ -46,7 +50,7 @@ RSpec.describe MapsController, type: :request do
     # 使用できるtypeは全てを満たさないので、下記の方法で対応を検討する。
     # スクレイピングによる情報の取得。キーワードの組み合わせによる検索
     it 'should return 200' do
-      get '/maps/text#search_text',
+      get '/maps/search_by_text#search_by_text',
           params: {
             query: '東京都',
             type: 'library',
@@ -57,7 +61,7 @@ RSpec.describe MapsController, type: :request do
     end
 
     it 'should return 200' do
-      get '/maps/text#search_text',
+      get '/maps/search_by_text#search_by_text',
           params: {
             query: '東京都',
             type: 'restaurant',
@@ -80,7 +84,7 @@ RSpec.describe MapsController, type: :request do
     # 使用できるtypeは全てを満たさないので、下記の方法で対応を検討する。
     # スクレイピングによる情報の取得。キーワードの組み合わせによる検索
     it 'should return 200' do
-      get '/maps/near_by#search_nearby',
+      get '/maps/search_nearby#search_nearby',
           params: {
             location: '35.658581,139.745433',
             radius: '500',
@@ -93,7 +97,7 @@ RSpec.describe MapsController, type: :request do
     end
 
     it 'should return 200' do
-      get '/maps/near_by#search_nearby',
+      get '/maps/search_nearby#search_nearby',
           params: {
             location: '35.658581,139.745433',
             radius: '500',
@@ -117,7 +121,7 @@ Nearby Search リクエストを keyword（または name）パラメータを�
     it 'should return 200' do
       get '/maps/place_detail#place_detail',
           params: {
-            place_id: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+            place_id: 'ChIJQ-DEZb2LGGARh3lURzSc4l0',
             fields: 'name,formatted_address,geometry,icon,opening_hours,photos,place_id,plus_code,types'
           }
       json = JSON.parse(response.body)
