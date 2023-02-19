@@ -1,24 +1,6 @@
 # README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### 実装方針
+- DB
+  - PostgreSQLを使用する。
+    - サーバーサイドをKtorに置き換える可能性があるので、テーブル間のリレーションはActiveRecordの機能のみならず、referenceを使ったリレーションも使う。
+    - かつ、Rails内での可読性もあげるため、has_oneやhas_manyなどの独自の機能も使っていく。
