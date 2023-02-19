@@ -4,4 +4,5 @@ class Event < ApplicationRecord
   has_many :registrations
   has_many :users, through: :registrations
 
+  #eventのplaceをnull不可にする。
 end

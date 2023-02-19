@@ -1,5 +1,6 @@
 class MapsController < ApplicationController
 
+  #TODO リファクタリング。ChatGPTだとエラー
   TEXT_QUERY = "textquery"
   INDIVIDUAL_FIELDS = 'name,place_id,geometry,types,photos,formatted_address,plus_code'
   DETAIL_FIELD = 'name,type,place_id,formatted_address,geometry,icon_background_color,url,photo,address_component,plus_code'
