@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 GroupとEventの一対多の関係を追加">
+    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 UserとEventの多対多の関係を追加">
+      <change afterPath="$PROJECT_DIR$/db/migrate/20230219040509_rename_column_in_table.rb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db/migrate/20230219060855_add_event_to_places.rb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db/migrate/20230219072708_change_place_id_null_constraint_to_events.rb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db/migrate/20230219074131_change_null_constraint_to_events.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/events_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/events_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/event.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/event.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/place.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/place.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Ruby File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="false" />
+    <option name="FILTER_DEBUG" value="false" />
+    <option name="CUSTOM_FILTER" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -22,15 +44,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "nodejs_package_manager_path": "npm",
-    "ruby.rails.projectView.checked": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ruby.rails.projectView.checked&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Rails.Development: DroidSoftThirdApi">
     <configuration name="Development: DroidSoftThirdApi" type="RailsRunConfigurationType" factoryName="Rails">
       <module name="DroidSoftThirdApi" />
@@ -139,7 +161,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1676722589298</updated>
-      <workItem from="1676722591017" duration="4179000" />
+      <workItem from="1676722591017" duration="15960000" />
+      <workItem from="1676790403115" duration="3669000" />
     </task>
     <task id="LOCAL-00001" summary="DST-446 Eventクラスの作成">
       <created>1676722709550</created>
@@ -176,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676735962959</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="DST-446 UserとEventの多対多の関係を追加">
+      <created>1676741547806</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1676741547806</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,6 +241,32 @@
     <MESSAGE value="DST-446 Placeモデルの追加" />
     <MESSAGE value="DST-446 EventとPlaceの1対1の依存関係を追加するように" />
     <MESSAGE value="DST-446 GroupとEventの一対多の関係を追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="DST-446 GroupとEventの一対多の関係を追加" />
+    <MESSAGE value="DST-446 UserとEventの多対多の関係を追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="DST-446 UserとEventの多対多の関係を追加" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+          <line>22</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+          <line>4</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1676793126871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
   </component>
 </project>

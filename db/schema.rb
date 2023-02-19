@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_12_164403) do
+ActiveRecord::Schema.define(version: 2023_02_19_074131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,21 @@ ActiveRecord::Schema.define(version: 2022_11_12_164403) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "host_id"
+    t.string "name"
+    t.string "comment"
+    t.string "date"
+    t.string "start_time"
+    t.string "end_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "place_id"
+    t.bigint "group_id", null: false
+    t.index ["group_id"], name: "index_events_on_group_id"
+    t.index ["place_id"], name: "index_events_on_place_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -55,6 +70,23 @@ ActiveRecord::Schema.define(version: 2022_11_12_164403) do
     t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
+  create_table "places", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "place_id"
+    t.string "place_type"
+    t.string "global_code"
+    t.string "compound_code"
+    t.string "url"
+    t.text "memo"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_places_on_event_id"
+  end
+
   create_table "prefectures", force: :cascade do |t|
     t.integer "prefecture_code"
     t.string "name"
@@ -66,6 +98,15 @@ ActiveRecord::Schema.define(version: 2022_11_12_164403) do
     t.float "capital_latitude"
     t.float "capital_longitude"
     t.integer "user_id"
+  end
+
+  create_table "registrations", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_registrations_on_event_id"
+    t.index ["user_id"], name: "index_registrations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,4 +123,9 @@ ActiveRecord::Schema.define(version: 2022_11_12_164403) do
     t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
+  add_foreign_key "events", "groups"
+  add_foreign_key "events", "places"
+  add_foreign_key "places", "events"
+  add_foreign_key "registrations", "events"
+  add_foreign_key "registrations", "users"
 end

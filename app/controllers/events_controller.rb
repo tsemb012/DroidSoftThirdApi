@@ -5,20 +5,18 @@ class EventsController < ApplicationController
   def create
     event = Event.new(event_params)
     place = Place.new(place_params)
-
-    if place.valid? && event.valid?
+    event.save!
+    event.place = place
+    if place.save!
       ActiveRecord::Base.transaction do
-        place.save!
         event.place = place
-        event.save!
-        event.users << User.find_by(user_id: group[:user_id])
-        event.registrations.build(user_id: user.id)
-        group = Group.find_by(group_id: group[:group_id])
+        event.users << User.find_by(user_id: event[:host_id])
+        group = Group.find event[:group_id]
         group.events << event
       end
       render json: { message: "success" }, status: :created
     else
-      render json: { message: "failure", errors: place.errors.merge(event.errors) }, status: :unprocessable_entity
+      render json: { message: "failure", errors: event.errors.full_messages + place.errors.full_messages }, status: 400
     end
   end
 
@@ -34,6 +32,6 @@ class EventsController < ApplicationController
   end
 
   def place_params
-    params.require(:place).permit(:name, :address, :latitude, :longitude, :place_id, :type, :global_code, :compound_code, :url, :memo)
+    params.require(:place).permit(:name, :address, :latitude, :longitude, :place_id, :place_type, :global_code, :compound_code, :url, :memo)
   end
 end
