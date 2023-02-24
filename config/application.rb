@@ -32,6 +32,17 @@ module DstApi
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
+
+    config.generators do |g|
+      g.assets false
+      g.skip_routes false
+      g.test_framework :rspec,
+                       controller_specs: false, # コントローラのspecファイルは生成しない
+                       view_specs: false, # ビューのspecファイルは生成しない
+                       helper_specs: false, # ヘルパーのspecファイルは生成しない
+                       routing_specs: false # ルーティングのspecファイルは生成しない
+    end
+
     config.api_only = true
     config.middleware.use ActionDispatch::Cookies
   end

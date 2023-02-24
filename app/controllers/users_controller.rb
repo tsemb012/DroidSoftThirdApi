@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-
+  #TODO リファクタリング。ChatGPTだとエラー
   #POST/ sign_up
   def sign_up
     user_id = params[:user_id]

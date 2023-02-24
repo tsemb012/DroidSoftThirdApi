@@ -2,6 +2,7 @@ class Group < ApplicationRecord
   #before_create :set_uuid
   has_many :participations
   has_many :users, through: :participations
+  has_many :events
 
 =begin
   private
