@@ -1,11 +1,25 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :participate]
 
+  def index
+    user = User.find_by(user_id: params[:user_id])
+    events = Event.joins(:group => :participations).where('participations.user_id = ?', user.id).map do |event|
+      event.as_json.merge(
+        {
+          group_name: event.group.name,
+          place_name: event.place&.name || "" ,
+        }
+      )
+    end
+    render json: events
+  end
+
   def create
     event = Event.new(event_params)
-    place = Place.new(place_params)
-    event.place = place
-
+    if params[:place].present?
+      place = Place.new(place_params)
+      event.place = place
+    end
     ActiveRecord::Base.transaction do
       event.save!
       event.users << User.find_by(user_id: event.host_id)
