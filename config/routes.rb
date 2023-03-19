@@ -23,4 +23,7 @@ Rails.application.routes.draw do
 
   get 'events' => 'events#index'
   post 'events' => 'events#create'
+  get 'events/:id' => 'events#show'
+  patch 'events/:id/register' => 'events#register'
+  patch 'events/:id/unregister' => 'events#unregister'
 end
