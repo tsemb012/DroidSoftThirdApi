@@ -21,5 +21,9 @@ Rails.application.routes.draw do
   get 'maps/search_nearby' => 'maps#search_nearby'
   get 'maps/place_detail' => 'maps#fetch_place_detail'
 
+  get 'events' => 'events#index'
   post 'events' => 'events#create'
+  get 'events/:id' => 'events#show'
+  patch 'events/:id/register' => 'events#register'
+  patch 'events/:id/unregister' => 'events#unregister'
 end
