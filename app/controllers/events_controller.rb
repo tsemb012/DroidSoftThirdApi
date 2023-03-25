@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :register, :unregister]
 
@@ -29,6 +31,8 @@ class EventsController < ApplicationController
 
   def create
     event = Event.new(event_params)
+    event.video_chat_room_id = SecureRandom.uuid
+
     if params[:place].present?
       place = Place.new(place_params)
       event.place = place
@@ -86,7 +90,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:host_id, :name, :comment, :date, :start_time, :end_time, :group_id)
+    params.require(:event).permit(:host_id, :name, :comment, :date, :start_time, :end_time, :group_id, :video_chat_room_id)
   end
 
   def place_params
