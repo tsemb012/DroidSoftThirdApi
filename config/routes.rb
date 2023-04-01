@@ -26,4 +26,5 @@ Rails.application.routes.draw do
   get 'events/:id' => 'events#show'
   patch 'events/:id/register' => 'events#register'
   patch 'events/:id/unregister' => 'events#unregister'
+  delete 'events/:id' => 'events#destroy'
 end

@@ -49,6 +49,17 @@ class EventsController < ApplicationController
     render json: { message: "failure", errors: event.errors.full_messages + place.errors.full_messages }, status: 400
   end
 
+  def destroy
+    @event.transaction do
+      # 関連するregistrationsレコードを削除（必要に応じて）
+      @event.registrations.destroy_all
+      @event.destroy
+    end
+    render json: { message: "success" }, status: :ok
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { message: "failure", errors: @event.errors.full_messages }, status: 400
+  end
+
   def register
     user_id = params[:user_id]
     user = User.find_by(user_id: user_id)
@@ -82,6 +93,7 @@ class EventsController < ApplicationController
       render json: { error: 'User not registered' }, status: :unprocessable_entity
     end
   end
+
 
   private
 
