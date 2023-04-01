@@ -20,8 +20,16 @@ class UsersController < ApplicationController
   # GET /users/1
   def show #よりDBに負荷がかからないようにリファクタをする。
     render json: @user.as_json
-                      .merge(area: {prefecture: @user.prefecture, city: @user.city})
-                      .merge(groups: @user.groups)
+                      .merge(
+                        {
+                          area: {
+                            prefecture: @user.prefecture,
+                            city: @user.city
+                          },
+                          groups: @user.groups,
+                          events: @user.events,
+                        }
+                      )
   end
 
   def new

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように">
-      <change beforePath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" afterDir="false" />
+    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-392-2 .envの追加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/events_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/events_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/event.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/event.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,6 +169,7 @@
       <workItem from="1679057757512" duration="7907000" />
       <workItem from="1679206286647" duration="784000" />
       <workItem from="1679210102437" duration="7723000" />
+      <workItem from="1680170160329" duration="9107000" />
     </task>
     <task id="LOCAL-00001" summary="DST-446 Eventクラスの作成">
       <created>1676722709550</created>
@@ -291,7 +293,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="DST-295" />
+                        <option value="master" />
                       </list>
                     </value>
                   </entry>
@@ -326,7 +328,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>80</line>
+          <line>91</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -334,7 +336,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>60</line>
+          <line>71</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -342,7 +344,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>57</line>
+          <line>68</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -350,7 +352,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>56</line>
+          <line>67</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -358,43 +360,11 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>84</line>
+          <line>96</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>21</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>22</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>23</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>25</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -405,6 +375,6 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1679225979253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1680325034103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
   </component>
 </project>
