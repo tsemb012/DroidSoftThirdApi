@@ -37,6 +37,11 @@ class GroupsController < ApplicationController
     end
   end
 
+  def show_group_locations
+    groups = Group.all
+    render json: groups.map { |group| group.as_json.merge({ place: group.place }) }
+  end
+
   def update
     if @group.update(group_params)
       render json: @group
@@ -57,7 +62,7 @@ class GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(
-      :host_id, :image_url, :name, :introduction, :group_type, :prefecture, :city,
+      :host_id, :image_url, :name, :introduction, :group_type, :prefecture_code, :city_code,
       :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age,
       :max_number, :min_number, :is_same_sexuality
     )
