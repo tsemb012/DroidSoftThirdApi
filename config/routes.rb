@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :groups
 
   get 'users' => 'users#index'
   get 'users/:user_id' => 'users#show'
@@ -14,7 +13,9 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
 
+  resources :groups
   patch '/groups/:id/participate', to: 'groups#participate'
+  get '/groups/locations', to: 'groups#show_group_locations'
 
   get 'maps/search_individual' => 'maps#search_individual'
   get 'maps/search_by_text' => 'maps#search_by_text'
@@ -27,4 +28,7 @@ Rails.application.routes.draw do
   patch 'events/:id/register' => 'events#register'
   patch 'events/:id/unregister' => 'events#unregister'
   delete 'events/:id' => 'events#destroy'
+
+  #TODO githubでlocationのレポジトリがpushされたらwebhookでpostのrequestを受け取り、location_csvに入っているファイルをActiveRecordに保存する。
+  post 'locations/csv' => 'locations#locad_csv'
 end
