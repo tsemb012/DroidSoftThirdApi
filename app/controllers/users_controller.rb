@@ -23,8 +23,8 @@ class UsersController < ApplicationController
                       .merge(
                         {
                           area: {
-                            prefecture: @user.prefecture, #TODO ここを書き換える。
-                            city: @user.city
+                            prefecture: Prefecture.find_by(prefecture_code: @user.prefecture_code),
+                            city: Prefecture.find_by(city_code: @user.city_code),
                           },
                           groups: @user.groups,
                           events: @user.events,
