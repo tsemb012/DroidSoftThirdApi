@@ -23,7 +23,7 @@ class UsersController < ApplicationController
                       .merge(
                         {
                           area: {
-                            prefecture: @user.prefecture,
+                            prefecture: @user.prefecture, #TODO ここを書き換える。
                             city: @user.city
                           },
                           groups: @user.groups,
@@ -38,9 +38,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params) &
-      @user.prefecture.update(prefecture_params) &
-      @user.city.update(city_params)
+    if @user.update(user_params)#prefecture_codeとcity_codeを入れるようにする。
 
       #&& @user.create_prefecture(prefecture_params) && @user.create_city(city_params)
       render json: { messages: "プロフィールを更新しました。" }, status: :created
@@ -62,27 +60,14 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:user_name, :age, :gender, :user_id, :user_image, :comment)# おそらくここが間違っているからpostが通らない。
-    end
-
-    def prefecture_params
-      #params.require(:prefecture).permit(area: [ prefecture: [:prefecture_code, :name, :spell, capital: [:capital_name, :capital_spell, :capital_latitude, :capital_longitude]]])
-      params[:area].require(:prefecture).permit(:prefecture_code, :name, :spell, :capital_name, :capital_spell, :capital_latitude, :capital_longitude)
-    end
-
-    def city_params
-      params[:area].require(:city).permit(:city_code, :name, :spell, :latitude, :longitude)
+      params.require(:user).permit(:user_name, :age, :gender, :user_id, :user_image, :comment, :prefecture_code, :city_code)# おそらくここが間違っているからpostが通らない。
     end
 
   def create(user_id, email)
     user = User.new(user_id: user_id, email: email)
     if user.save
-      prefecture = user.create_prefecture
-      city = user.create_city
-      if prefecture.save & city.save
-        log_in user
-        render json: user, status: :created#, location: user
-      end
+      log_in user
+      render json: user, status: :created#, location: user
       # TODO 成功した時に何をモバイル側に返せば良いのかを確認する。
       # TODO 成功と共にAndroidの画面を切り替える。
     else

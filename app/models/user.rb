@@ -1,9 +1,6 @@
 class User < ApplicationRecord
   #before_create :set_uuid
 
-  has_one :prefecture
-  has_one :city
-
   has_many :participations
   has_many :groups, through: :participations
 

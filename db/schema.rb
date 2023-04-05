@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_25_083506) do
+ActiveRecord::Schema.define(version: 2023_04_05_134659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.float "longitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -96,7 +95,6 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.string "capital_spell"
     t.float "capital_latitude"
     t.float "capital_longitude"
-    t.integer "user_id"
   end
 
   create_table "registrations", force: :cascade do |t|
