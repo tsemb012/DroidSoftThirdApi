@@ -24,9 +24,16 @@ class UsersController < ApplicationController
                         {
                           area: {
                             prefecture: Prefecture.find_by(prefecture_code: @user.prefecture_code),
-                            city: Prefecture.find_by(city_code: @user.city_code),
+                            city: City.find_by(city_code: @user.city_code),
                           },
-                          groups: @user.groups,
+                          groups: @user.groups.map do |group|
+                            group.as_json.merge(
+                              {
+                                prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
+                                city: City.find_by(city_code: group.city_code).name
+                              }
+                            )
+                          end,
                           events: @user.events,
                         }
                       )
@@ -40,7 +47,6 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)#prefecture_codeとcity_codeを入れるようにする。
 
-      #&& @user.create_prefecture(prefecture_params) && @user.create_city(city_params)
       render json: { messages: "プロフィールを更新しました。" }, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity

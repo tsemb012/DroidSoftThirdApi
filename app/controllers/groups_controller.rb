@@ -3,17 +3,45 @@ class GroupsController < ApplicationController
 
   def index
     if params[:page] # 指定されたページのアイテムを取得する
-      groups = Group.page(params[:page]).per(4)
+      groups = Group.page(params[:page]).per(4).map do |group|
+        group.as_json.merge(
+          {
+            prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
+            city: City.find_by(city_code: group.city_code).name
+          }
+        )
+      end
     elsif params[:user_id] # 指定されたユーザーの参加しているグループを取得する
-      groups = Group.joins(:users).where(users: { user_id: params[:user_id] })
+      groups = Group.joins(:users).where(users: { user_id: params[:user_id] }).map do |group|
+        group.as_json.merge(
+          {
+            prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
+            city: City.find_by(city_code: group.city_code).name
+          }
+        )
+      end
     else
-      groups = Group.all # 全てのグループを取得する
+      groups = Group.all.map do |group|
+        group.as_json.merge(
+          {
+            prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
+            city: City.find_by(city_code: group.city_code).name
+          }
+        )
+      end # 全てのグループを取得する
     end
     render json: groups
   end
 
+
+
   def show
-    render json: @group.as_json.merge({ members: @group.users })
+    render json: @group.as_json.merge(
+      {
+        members: @group.users,
+        prefecture: Prefecture.find_by(prefecture_code: @group.prefecture_code).name,
+        city: City.find_by(city_code: @group.city_code).name
+      })
   end
 
   def participate
