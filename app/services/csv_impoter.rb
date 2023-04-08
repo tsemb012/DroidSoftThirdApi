@@ -5,8 +5,16 @@ module CsvImporter
     Prefecture.transaction do
       Prefecture.delete_all
 
-      CSV.foreach(prefecture_csv_file_path, headers: true) do |row|
-        Prefecture.create!(row.to_h)
+      CSV.foreach(prefecture_csv_file_path, headers: false) do |row|
+        Prefecture.create!(
+          prefecture_code: row[0].to_i,
+          name: row[1],
+          spell: row[3],
+          capital_name: row[4],
+          capital_spell: row[5],
+          capital_latitude: row[6].to_f,
+          capital_longitude: row[7].to_f,
+        )
       end
     end
   end
@@ -22,9 +30,8 @@ module CsvImporter
       CSV.foreach(city_name_csv_file_path, headers: false) do |row|
         city_code = row[0].to_i
         city_name_data[city_code] = {
-          city_name: row[1],
-          city_kana: row[2],
-          city_spell: row[3],
+          name: row[1],
+          spell: row[3],
           prefecture_code: row[4].to_i,
         }
       end
@@ -33,12 +40,11 @@ module CsvImporter
         city_code = row[2].to_i
         merged_table_data = {
           city_code: city_code,
-          city_name: city_name_data[city_code][:city_name],
-          city_kana: city_name_data[city_code][:city_kana],
-          city_spell: city_name_data[city_code][:city_spell],
+          name: city_name_data[city_code][:name],
+          spell: city_name_data[city_code][:spell],
           prefecture_code: city_name_data[city_code][:prefecture_code],
-          lat: row[5],
-          lng: row[6],
+          latitude: row[5].to_f,
+          longitude: row[6].to_f,
           lg_code: row[9],
         }
         City.create!(merged_table_data)
