@@ -29,6 +29,5 @@ Rails.application.routes.draw do
   patch 'events/:id/unregister' => 'events#unregister'
   delete 'events/:id' => 'events#destroy'
 
-  #TODO githubでlocationのレポジトリがpushされたらwebhookでpostのrequestを受け取り、location_csvに入っているファイルをActiveRecordに保存する。
-  post 'locations/csv' => 'locations#locad_csv'
+  resource :github_webhooks, only: :create, defaults: { formats: :json }
 end
