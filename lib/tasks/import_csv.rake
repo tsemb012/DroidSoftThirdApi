@@ -1,4 +1,4 @@
-require 'csv_importer'
+require './app/services/csv_importer.rb'
 
 namespace :import_csv do
   include CsvImporter

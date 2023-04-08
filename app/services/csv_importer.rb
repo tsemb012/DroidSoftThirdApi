@@ -37,6 +37,11 @@ module CsvImporter
       end
 
       CSV.foreach(city_latlng_csv_file_path, headers: true) do |row|
+        if city_name_data[row[2].to_i].nil?
+          puts "city_name_data[#{row[2].to_i}] is nil"
+          next
+        end
+
         city_code = row[2].to_i
         merged_table_data = {
           city_code: city_code,

@@ -16,6 +16,9 @@ gem 'httparty'
 # Use Faraday for HTTP requests
 gem 'faraday'
 
+# CSV
+gem 'csv'
+
 # Use Dotenv for environment variables
 gem 'dotenv-rails'
 
