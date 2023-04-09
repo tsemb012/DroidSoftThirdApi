@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :groups
   patch '/groups/:id/participate', to: 'groups#participate'
-  get '/groups/locations', to: 'groups#show_group_locations'
+  get '/groups/locations/count', to: 'groups#group_count_by_area'
 
   get 'maps/search_individual' => 'maps#search_individual'
   get 'maps/search_by_text' => 'maps#search_by_text'

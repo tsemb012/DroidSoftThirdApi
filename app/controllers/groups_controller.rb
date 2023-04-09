@@ -65,9 +65,34 @@ class GroupsController < ApplicationController
     end
   end
 
-  def show_group_locations
-    groups = Group.all
-    render json: groups.map { |group| group.as_json.merge({ place: group.place }) }
+  def group_count_by_area
+    group_counts_by_city = Group.all.group_by(&:city_code).map do |city_code, groups|
+      city = City.find_by(city_code: city_code)
+      {
+        category: 'city',
+        code: city_code,
+        prefectureName: Prefecture.find_by(prefecture_code: city.prefecture_code).name,
+        cityName: city.name,
+        latitude: city.latitude,
+        longitude: city.longitude,
+        group_count: groups.size
+      }
+    end
+
+    group_counts_by_prefecture = Group.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
+      prefecture = Prefecture.find_by(prefecture_code: prefecture_code)
+      {
+        category: 'prefecture',
+        code: prefecture_code,
+        prefectureName: prefecture.name,
+        cityName: nil,
+        latitude: prefecture.capital_latitude,
+        longitude: prefecture.capital_longitude,
+        group_count: groups.size
+      }
+    end
+    group_counts_by_area = group_counts_by_city + group_counts_by_prefecture
+    render json: group_counts_by_area
   end
 
   def update
