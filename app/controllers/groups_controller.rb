@@ -71,8 +71,8 @@ class GroupsController < ApplicationController
       {
         category: 'city',
         code: city_code,
-        prefectureName: Prefecture.find_by(prefecture_code: city.prefecture_code).name,
-        cityName: city.name,
+        prefecture_name: Prefecture.find_by(prefecture_code: city.prefecture_code).name,
+        city_name: city.name,
         latitude: city.latitude,
         longitude: city.longitude,
         group_count: groups.size
@@ -84,8 +84,8 @@ class GroupsController < ApplicationController
       {
         category: 'prefecture',
         code: prefecture_code,
-        prefectureName: prefecture.name,
-        cityName: nil,
+        prefecture_name: prefecture.name,
+        city_name: nil,
         latitude: prefecture.capital_latitude,
         longitude: prefecture.capital_longitude,
         group_count: groups.size
