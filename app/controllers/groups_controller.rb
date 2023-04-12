@@ -2,11 +2,7 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy, :participate]
 
   def index
-    groups = if params[:page]
-               groups_with_pagination
-             else
-               Group.all.map { |group| group_with_location(group) }
-             end
+    groups = groups_with_pagination
     render json: groups
   end
 
