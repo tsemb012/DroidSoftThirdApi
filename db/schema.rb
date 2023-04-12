@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_25_083506) do
+ActiveRecord::Schema.define(version: 2023_04_08_071553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.float "longitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.string "prefecture_code"
+    t.string "lg_code"
   end
 
   create_table "events", force: :cascade do |t|
@@ -45,8 +46,6 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.string "name"
     t.text "introduction"
     t.string "group_type"
-    t.string "prefecture"
-    t.string "city"
     t.string "facility_environment"
     t.string "frequency_basis"
     t.integer "frequency_times"
@@ -58,6 +57,8 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "host_id"
+    t.integer "prefecture_code"
+    t.integer "city_code"
   end
 
   create_table "participations", force: :cascade do |t|
@@ -96,7 +97,6 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.string "capital_spell"
     t.float "capital_latitude"
     t.float "capital_longitude"
-    t.integer "user_id"
   end
 
   create_table "registrations", force: :cascade do |t|
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 2023_03_25_083506) do
     t.string "user_id"
     t.string "user_image"
     t.string "comment"
+    t.integer "prefecture_code"
+    t.integer "city_code"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end

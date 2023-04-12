@@ -1,0 +1,185 @@
+Index: .idea/workspace.xml
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -1,11 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-446 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように">
+-      <change beforePath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" afterDir="false" />
++    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-471 EventにビデオチャットのIdを追加するように">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/app/controllers/events_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/events_controller.rb" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -20,6 +17,11 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="DST-295" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="LogFilters">
+@@ -167,7 +169,11 @@
+       <workItem from="1678884260987" duration="1999000" />
+       <workItem from="1679057757512" duration="7907000" />
+       <workItem from="1679206286647" duration="784000" />
+-      <workItem from="1679210102437" duration="7723000" />
++      <workItem from="1679210102437" duration="8616000" />
++      <workItem from="1679369590228" duration="3714000" />
++      <workItem from="1679484204619" duration="3262000" />
++      <workItem from="1679582476317" duration="612000" />
++      <workItem from="1679653716591" duration="3792000" />
+     </task>
+     <task id="LOCAL-00001" summary="DST-446 Eventクラスの作成">
+       <created>1676722709550</created>
+@@ -274,7 +280,28 @@
+       <option name="project" value="LOCAL" />
+       <updated>1677415212813</updated>
+     </task>
+-    <option name="localTasksCounter" value="16" />
++    <task id="LOCAL-00016" summary="DST-446 イベント詳細を表示し、参加・不参加をできるように修正">
++      <created>1679228621620</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1679228621620</updated>
++    </task>
++    <task id="LOCAL-00017" summary="DST-446 イベント詳細を表示し、参加・不参加をできるように修正">
++      <created>1679228643538</created>
++      <option name="number" value="00017" />
++      <option name="presentableId" value="LOCAL-00017" />
++      <option name="project" value="LOCAL" />
++      <updated>1679228643538</updated>
++    </task>
++    <task id="LOCAL-00018" summary="DST-446 EventにビデオチャットのIdを追加するように">
++      <created>1679735380021</created>
++      <option name="number" value="00018" />
++      <option name="presentableId" value="LOCAL-00018" />
++      <option name="project" value="LOCAL" />
++      <updated>1679735380021</updated>
++    </task>
++    <option name="localTasksCounter" value="19" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -291,7 +318,7 @@
+                   <entry key="branch">
+                     <value>
+                       <list>
+-                        <option value="DST-295" />
++                        <option value="DST-471" />
+                       </list>
+                     </value>
+                   </entry>
+@@ -318,15 +345,18 @@
+     <MESSAGE value="DST-446 groups_controller.rbをリファクタリング" />
+     <MESSAGE value="DST-446 maps_controller.rbリファクタリング１" />
+     <MESSAGE value="DST-446 コメント追加" />
+-    <MESSAGE value="DST-446 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように" />
+-    <option name="LAST_COMMIT_MESSAGE" value="DST-446 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように" />
++    <MESSAGE value="DST-471 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように" />
++    <MESSAGE value="DST-471 イベント詳細を表示し、参加・不参加をできるように修正" />
++    <MESSAGE value="DST-471 EventにビデオチャットのIdを追加するように" />
++    <MESSAGE value="DST-471 イベント詳細を表示し、参加・不参加をできるように修正" />
++    <option name="LAST_COMMIT_MESSAGE" value="DST-471 EventにビデオチャットのIdを追加するように" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+       <breakpoints>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>80</line>
++          <line>84</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -334,7 +364,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>60</line>
++          <line>64</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -342,7 +372,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>57</line>
++          <line>61</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -350,7 +380,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>56</line>
++          <line>60</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -358,7 +388,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>84</line>
++          <line>88</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -366,7 +396,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>21</line>
++          <line>23</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -374,7 +404,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>22</line>
++          <line>24</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -382,7 +412,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>23</line>
++          <line>25</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -390,7 +420,7 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="ruby-line">
+           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
+-          <line>25</line>
++          <line>27</line>
+           <properties myBlockOrdinal="-1">
+             <option name="block-ordinal" value="-1" />
+           </properties>
+@@ -405,6 +435,6 @@
+     </pin-to-top-manager>
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+-    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1679225979253" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
++    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1679494685316" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+   </component>
+ </project>
+\ No newline at end of file

@@ -1,0 +1,3 @@
+[submodule "lib/submodule/location_csv"]
+	path = lib/submodule/location_csv
+	url = https://github.com/tsemb012/LocationCsv.git

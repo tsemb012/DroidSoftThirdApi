@@ -16,6 +16,9 @@ gem 'httparty'
 # Use Faraday for HTTP requests
 gem 'faraday'
 
+# CSV
+gem 'csv'
+
 # Use Dotenv for environment variables
 gem 'dotenv-rails'
 
@@ -39,6 +42,10 @@ gem 'bcrypt', '~> 3.1.7'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+
+# github webhook
+gem 'github_webhook', '~> 1.4'
+
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

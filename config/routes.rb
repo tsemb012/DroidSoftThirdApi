@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :groups
 
   get 'users' => 'users#index'
   get 'users/:user_id' => 'users#show'
+  get 'users/:user_id/groups' => 'users#show_joined_groups'
   get 'users/new' => 'users#new'
   post 'users' => 'users#create'
   get 'users/:id/edit' => 'users#edit'
@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
 
+  resources :groups
   patch '/groups/:id/participate', to: 'groups#participate'
+  get '/groups/locations/count', to: 'groups#group_count_by_area'
 
   get 'maps/search_individual' => 'maps#search_individual'
   get 'maps/search_by_text' => 'maps#search_by_text'
@@ -27,4 +29,6 @@ Rails.application.routes.draw do
   patch 'events/:id/register' => 'events#register'
   patch 'events/:id/unregister' => 'events#unregister'
   delete 'events/:id' => 'events#destroy'
+
+  resource :github_webhooks, only: :create, defaults: { formats: :json }
 end

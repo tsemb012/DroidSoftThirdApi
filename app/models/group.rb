@@ -4,12 +4,6 @@ class Group < ApplicationRecord
   has_many :users, through: :participations
   has_many :events
 
-=begin
-  private
-    def set_uuid
-      while self.id.blank? || User.find_by(id: self.id).present? do
-        self.id = SecureRandom.uuid.
-      end
-    end
-=end
+  scope :by_prefecture, ->(area_category, area_code) { where(prefecture_code: area_code) if area_category == 'prefecture' }
+  scope :by_city, ->(area_category, area_code) { where(city_code: area_code) if area_category == 'city' }
 end
