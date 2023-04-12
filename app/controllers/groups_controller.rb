@@ -8,13 +8,12 @@ class GroupsController < ApplicationController
                Group.all.map { |group| group_with_location(group) }
              end
     render json: groups
-
+  end
 
     # TODO finderクラスに切り分けてしまう　→　複雑系
     # TODO スコープ
 
     # 新しいコントローラーを分ける。別のコントロらー
-  end
 
   def show
     render json: @group.as_json.merge(
