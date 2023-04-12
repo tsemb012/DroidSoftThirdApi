@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   get 'users' => 'users#index'
   get 'users/:user_id' => 'users#show'
+  get 'users/:user_id/groups' => 'users#show_joined_groups'
   get 'users/new' => 'users#new'
   post 'users' => 'users#create'
   get 'users/:id/edit' => 'users#edit'

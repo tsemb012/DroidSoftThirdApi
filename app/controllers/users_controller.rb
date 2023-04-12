@@ -39,6 +39,12 @@ class UsersController < ApplicationController
                       )
   end
 
+  # GET /users/1/groups
+  def show_joined_groups
+    groups = Group.joins(:users).where(users: { user_id: params[:user_id] }).map { |group| group_with_location(group) }
+    render json: groups
+  end
+
   def new
     #@user = User.new　＃APIでなければ、ここでビューを返す。
   end
@@ -80,6 +86,15 @@ class UsersController < ApplicationController
       render json: user.errors, status: :unprocessable_entity
       #ここでエラーを返しているので、Android側ではメッセージを出して再度認証してもらうのが正解。
     end
+  end
+
+  def group_with_location(group)
+    group.as_json.merge(
+      {
+        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
+        city: City.find_by(city_code: group.city_code).name
+      }
+    )
   end
 
 end
