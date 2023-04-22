@@ -93,11 +93,11 @@ class GroupsController < ApplicationController
     params.require(:group).permit(
       :host_id, :image_url, :name, :introduction, :group_type, :prefecture_code, :city_code,
       :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age,
-      :max_number, :min_number, :is_same_sexuality
+      :max_number, :is_same_sexuality
     )
   end
 
-  def groups_with_pagination
+  def groups_with_pagination #AndroidでPaginationの実装を使用している以上これで問題ないが、web, iosなどを今後使う場合は問題になる。
     groups = if params[:area_category] == 'prefecture' && params[:area_code]
                Group.where(prefecture_code: params[:area_code])
              elsif params[:area_category] == 'city' && params[:area_code]
@@ -105,7 +105,7 @@ class GroupsController < ApplicationController
              else
                Group.all
              end
-    groups.page(params[:page]).per(4).map { |group| group_with_location(group) }
+    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
 
   def all_groups

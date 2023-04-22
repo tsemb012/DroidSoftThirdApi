@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_08_071553) do
+ActiveRecord::Schema.define(version: 2023_04_22_091924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2023_04_08_071553) do
     t.integer "max_age"
     t.integer "min_age"
     t.integer "max_number"
-    t.integer "min_number"
     t.boolean "is_same_sexuality"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
