@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_22_091924) do
+ActiveRecord::Schema.define(version: 2023_04_24_151722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,13 +31,12 @@ ActiveRecord::Schema.define(version: 2023_04_22_091924) do
     t.string "host_id"
     t.string "name"
     t.string "comment"
-    t.string "date"
-    t.string "start_time"
-    t.string "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "group_id", null: false
     t.string "video_chat_room_id"
+    t.datetime "start_date_time"
+    t.datetime "end_date_time"
     t.index ["group_id"], name: "index_events_on_group_id"
   end
 

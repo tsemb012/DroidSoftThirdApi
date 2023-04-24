@@ -30,23 +30,19 @@ class EventsController < ApplicationController
   end
 
   def create
-    event = Event.new(event_params)
+    event = build_event_with_dates(event_params)
     event.video_chat_room_id = SecureRandom.uuid
 
     if params[:place].present?
       place = Place.new(place_params)
       event.place = place
     end
-    ActiveRecord::Base.transaction do
-      event.save!
-      event.users << User.find_by(user_id: event.host_id)
-      group = Group.find(event.group_id)
-      group.events << event
-    end
+
+    save_event_with_transaction(event)
 
     render json: { message: "success" }, status: :created
   rescue ActiveRecord::RecordInvalid => e
-    render json: { message: "failure", errors: event.errors.full_messages + place.errors.full_messages }, status: 400
+    render json: { message: "failure", errors: event.errors.full_messages + place&.errors&.full_messages.to_a }, status: 400
   end
 
   def destroy
@@ -102,10 +98,26 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:host_id, :name, :comment, :date, :start_time, :end_time, :group_id, :video_chat_room_id)
+    params.require(:event).permit(:host_id, :name, :comment, :date, :start_date_time, :end_date_time, :group_id, :video_chat_room_id)
   end
 
   def place_params
     params.require(:place).permit(:name, :address, :latitude, :longitude, :place_id, :place_type, :global_code, :compound_code, :url, :memo)
+  end
+
+  def build_event_with_dates(params)
+    event = Event.new(params.except(:start_date_time, :end_date_time))
+    event.start_date_time = DateTime.parse(params[:start_date_time])
+    event.end_date_time = DateTime.parse(params[:end_date_time])
+    event
+  end
+
+  def save_event_with_transaction(event)
+    ActiveRecord::Base.transaction do
+      event.save!
+      event.users << User.find_by(user_id: event.host_id)
+      group = Group.find(event.group_id)
+      group.events << event
+    end
   end
 end

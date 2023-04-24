@@ -45,5 +45,6 @@ module DstApi
 
     config.api_only = true
     config.middleware.use ActionDispatch::Cookies
+    config.time_zone = 'UTC'
   end
 end
