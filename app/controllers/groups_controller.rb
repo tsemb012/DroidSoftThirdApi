@@ -115,7 +115,7 @@ class GroupsController < ApplicationController
                             .group("groups.id")
                             .having("groups.max_number > COUNT(participations.id)")
                             .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
-    #自分の所属グループが表示されないようにする。
+                            .where.not("groups.id IN (?)", user.groups.ids)
 
     filtered_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
