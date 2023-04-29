@@ -107,8 +107,11 @@ class GroupsController < ApplicationController
              else
                Group.all
              end
-    filtered_groups = groups.where("max_age >= ?", user.age)
+    filtered_groups = groups.joins("LEFT JOIN participations ON groups.id = participations.group_id")
+                            .where("max_age >= ?", user.age)
                             .where("min_age <= ?", user.age)
+                            .group("groups.id")
+                            .having("groups.max_number > COUNT(participations.id)")
 =begin
     filtered_groups = Group.where(id: groups.map(&:id))
     #.where("max_number > ?", User.group(:group_id).where(groups: {id: Group.ids}).count)
@@ -131,6 +134,10 @@ class GroupsController < ApplicationController
         city: City.find_by(city_code: group.city_code).name
       }
     )
+  end
+
+  def group_member_count(group_id)
+    Participation.where(group_id: group_id).count
   end
 end
 
