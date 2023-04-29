@@ -41,7 +41,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  def group_count_by_area
+  def group_count_by_area #TODO ここも修正する。
     group_counts_by_city = Group.all.group_by(&:city_code).map do |city_code, groups|
       city = City.find_by(city_code: city_code)
       {
@@ -107,18 +107,15 @@ class GroupsController < ApplicationController
              else
                Group.all
              end
+
     filtered_groups = groups.joins("LEFT JOIN participations ON groups.id = participations.group_id")
+                            .joins("LEFT JOIN users ON participations.user_id = users.id")
                             .where("max_age >= ?", user.age)
                             .where("min_age <= ?", user.age)
                             .group("groups.id")
                             .having("groups.max_number > COUNT(participations.id)")
-=begin
-    filtered_groups = Group.where(id: groups.map(&:id))
-    #.where("max_number > ?", User.group(:group_id).where(groups: {id: Group.ids}).count)
-                           .where("max_age >= ?", user.age)
-                           .where("min_age <= ?", user.age)
-=end
-    #.by_gender(user.gender)
+                            .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
+    #自分の所属グループが表示されないようにする。
 
     filtered_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
