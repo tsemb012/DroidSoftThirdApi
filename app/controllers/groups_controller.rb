@@ -107,10 +107,14 @@ class GroupsController < ApplicationController
              else
                Group.all
              end
+    filtered_groups = groups.where("max_age >= ?", user.age)
+                            .where("min_age <= ?", user.age)
+=begin
     filtered_groups = Group.where(id: groups.map(&:id))
-                           .where("max_number > ?", User.group(:group_id).where(groups: {id: Group.ids}).count)
+    #.where("max_number > ?", User.group(:group_id).where(groups: {id: Group.ids}).count)
                            .where("max_age >= ?", user.age)
                            .where("min_age <= ?", user.age)
+=end
     #.by_gender(user.gender)
 
     filtered_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }

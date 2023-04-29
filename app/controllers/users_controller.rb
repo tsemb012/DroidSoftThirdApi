@@ -51,13 +51,20 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)#prefecture_codeとcity_codeを入れるようにする。
-
-      render json: { messages: "プロフィールを更新しました。" }, status: :created
-    else
-      render json: @user.errors, status: :unprocessable_entity
+    begin
+      User.transaction do
+        update_user_with_date(user_params)
+        if @user.save
+          render json: { messages: "プロフィールを更新しました。" }, status: :created
+        else
+          render json: @user.errors, status: :unprocessable_entity
+        end
+      end
+    rescue => e
+      render json: { errors: e.message }, status: :unprocessable_entity
     end
   end
+
 
   # DELETE /users/1
   def destroy
@@ -72,7 +79,7 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:user_name, :age, :gender, :user_id, :user_image, :comment, :prefecture_code, :city_code)# おそらくここが間違っているからpostが通らない。
+      params.require(:user).permit(:user_name, :birthday, :gender, :user_id, :user_image, :comment, :prefecture_code, :city_code)# おそらくここが間違っているからpostが通らない。
     end
 
   def create(user_id, email)
@@ -95,6 +102,11 @@ class UsersController < ApplicationController
         city: City.find_by(city_code: group.city_code).name
       }
     )
+  end
+
+  def update_user_with_date(params)
+    @user.assign_attributes(params.except(:birthday))
+    @user.birthday = Date.parse(params[:birthday]) if params[:birthday].present?
   end
 
 end
