@@ -97,7 +97,9 @@ class GroupsController < ApplicationController
     )
   end
 
-  def groups_with_pagination #AndroidでPaginationの実装を使用している以上これで問題ないが、web, iosなどを今後使う場合は問題になる。
+  def groups_with_pagination
+    #AndroidでPaginationの実装を使用している以上これで問題ないが、web, iosなどを今後使う場合は問題になる。
+    user = User.find_by(user_id: params[:user_id])
     groups = if params[:area_category] == 'prefecture' && params[:area_code]
                Group.where(prefecture_code: params[:area_code])
              elsif params[:area_category] == 'city' && params[:area_code]
@@ -105,7 +107,13 @@ class GroupsController < ApplicationController
              else
                Group.all
              end
-    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
+    filtered_groups = Group.where(id: groups.map(&:id))
+                           .where("max_number > ?", User.group(:group_id).where(groups: {id: Group.ids}).count)
+                           .where("max_age >= ?", user.age)
+                           .where("min_age <= ?", user.age)
+    #.by_gender(user.gender)
+
+    filtered_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
 
   def all_groups
@@ -120,6 +128,5 @@ class GroupsController < ApplicationController
       }
     )
   end
-
 end
 
