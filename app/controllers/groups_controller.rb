@@ -6,11 +6,6 @@ class GroupsController < ApplicationController
     render json: groups
   end
 
-    # TODO finderクラスに切り分けてしまう　→　複雑系
-    # TODO スコープ
-
-    # 新しいコントローラーを分ける。別のコントロらー
-
   def show
     render json: @group.as_json.merge(
       {
@@ -41,8 +36,8 @@ class GroupsController < ApplicationController
     end
   end
 
-  def group_count_by_area #TODO ここも修正する。
-    group_counts_by_city = Group.all.group_by(&:city_code).map do |city_code, groups|
+  def group_count_by_area
+    group_counts_by_city = initialized_groups.all.group_by(&:city_code).map do |city_code, groups|
       city = City.find_by(city_code: city_code)
       {
         category: 'city',
@@ -55,7 +50,7 @@ class GroupsController < ApplicationController
       }
     end
 
-    group_counts_by_prefecture = Group.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
+    group_counts_by_prefecture = initialized_groups.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
       prefecture = Prefecture.find_by(prefecture_code: prefecture_code)
       {
         category: 'prefecture',
@@ -99,25 +94,15 @@ class GroupsController < ApplicationController
 
   def groups_with_pagination
     #AndroidでPaginationの実装を使用している以上これで問題ないが、web, iosなどを今後使う場合は問題になる。
-    user = User.find_by(user_id: params[:user_id])
     groups = if params[:area_category] == 'prefecture' && params[:area_code]
-               Group.where(prefecture_code: params[:area_code])
+               initialized_groups.where(prefecture_code: params[:area_code])
              elsif params[:area_category] == 'city' && params[:area_code]
-               Group.where(city_code: params[:area_code])
+               initialized_groups.where(city_code: params[:area_code])
              else
-               Group.all
+               initialized_groups.all
              end
 
-    filtered_groups = groups.joins("LEFT JOIN participations ON groups.id = participations.group_id")
-                            .joins("LEFT JOIN users ON participations.user_id = users.id")
-                            .where("max_age >= ?", user.age)
-                            .where("min_age <= ?", user.age)
-                            .group("groups.id")
-                            .having("groups.max_number > COUNT(participations.id)")
-                            .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
-                            .where.not("groups.id IN (?)", user.groups.ids)
-
-    filtered_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
+    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
 
   def all_groups
@@ -135,6 +120,18 @@ class GroupsController < ApplicationController
 
   def group_member_count(group_id)
     Participation.where(group_id: group_id).count
+  end
+
+  def initialized_groups
+    user = User.find_by(user_id: params[:user_id])
+    Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
+          .joins("LEFT JOIN users ON participations.user_id = users.id")
+          .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
+          .where("min_age <= ?", user.age)
+          .group("groups.id")
+          .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
+          .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
+          .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
   end
 end
 
