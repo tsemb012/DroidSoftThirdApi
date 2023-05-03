@@ -15,7 +15,7 @@ class Group < ApplicationRecord
 
   enum frequency_basis: {
     daily: 0, weekly: 1, monthly: 2,
-    none_facility_basis: -1
+    none_frequency_basis: -1
   }
 
   enum facility_environment: {

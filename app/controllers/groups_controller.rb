@@ -87,12 +87,7 @@ class GroupsController < ApplicationController
   def group_params
     params.require(:group).permit(
       :host_id, :image_url, :name, :introduction, :prefecture_code, :city_code, :is_online, :frequency_times, :max_age, :min_age,
-      :max_number, :is_same_sexuality
-    ).merge(
-      group_type: Group.group_types[params[:group][:group_type]],
-      frequency_basis: Group.frequency_bases[params[:group][:frequency_basis]],
-      facility_environment: Group.facility_environments[params[:group][:facility_environment]]
-    )
+      :max_number, :is_same_sexuality, :group_type, :frequency_basis, :facility_environment)
   end
 
   def groups_with_pagination
