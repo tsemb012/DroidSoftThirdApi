@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_28_151608) do
+ActiveRecord::Schema.define(version: 2023_05_03_123447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2023_04_28_151608) do
     t.string "host_id"
     t.integer "prefecture_code"
     t.integer "city_code"
+    t.boolean "is_online"
   end
 
   create_table "participations", force: :cascade do |t|
