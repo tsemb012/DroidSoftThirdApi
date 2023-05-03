@@ -10,8 +10,8 @@ class GroupsController < ApplicationController
     render json: @group.as_json.merge(
       {
         members: @group.users,
-        prefecture: Prefecture.find_by(prefecture_code: @group.prefecture_code).name,
-        city: City.find_by(city_code: @group.city_code).name
+        prefecture: Prefecture.find_by(prefecture_code: @group.prefecture_code)&.name,
+        city: City.find_by(city_code: @group.city_code)&.name
       })
   end
 
@@ -86,7 +86,7 @@ class GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(
-      :host_id, :image_url, :name, :introduction, :group_type, :prefecture_code, :city_code,
+      :host_id, :image_url, :name, :introduction, :group_type, :prefecture_code, :city_code, :is_online,
       :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age,
       :max_number, :is_same_sexuality
     )
