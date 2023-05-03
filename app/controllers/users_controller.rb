@@ -29,8 +29,8 @@ class UsersController < ApplicationController
                           groups: @user.groups.map do |group|
                             group.as_json.merge(
                               {
-                                prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
-                                city: City.find_by(city_code: group.city_code).name
+                                prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
+                                city: City.find_by(city_code: group.city_code)&.name
                               }
                             )
                           end,
@@ -98,8 +98,8 @@ class UsersController < ApplicationController
   def group_with_location(group)
     group.as_json.merge(
       {
-        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
-        city: City.find_by(city_code: group.city_code).name
+        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
+        city: City.find_by(city_code: group.city_code)&.name
       }
     )
   end
