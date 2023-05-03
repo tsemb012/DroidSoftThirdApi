@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_03_123447) do
+ActiveRecord::Schema.define(version: 2023_05_03_132358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,9 +44,6 @@ ActiveRecord::Schema.define(version: 2023_05_03_123447) do
     t.string "image_url"
     t.string "name"
     t.text "introduction"
-    t.string "group_type"
-    t.string "facility_environment"
-    t.string "frequency_basis"
     t.integer "frequency_times"
     t.integer "max_age"
     t.integer "min_age"
@@ -58,6 +55,9 @@ ActiveRecord::Schema.define(version: 2023_05_03_123447) do
     t.integer "prefecture_code"
     t.integer "city_code"
     t.boolean "is_online"
+    t.integer "group_type"
+    t.integer "facility_environment"
+    t.integer "frequency_basis"
   end
 
   create_table "participations", force: :cascade do |t|
