@@ -85,23 +85,31 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(
+    params.permit(
       :host_id, :image_url, :name, :introduction, :prefecture_code, :city_code, :is_online, :frequency_times, :max_age, :min_age,
-      :max_number, :is_same_sexuality, :group_type, :frequency_basis, :facility_environment)
+      :max_number, :is_same_sexuality, { group_types: [] }, { facility_environments: [] }, :frequency_basis)
   end
 
   def groups_with_pagination
-    #AndroidでPaginationの実装を使用している以上これで問題ないが、web, iosなどを今後使う場合は問題になる。
-    groups = if params[:area_category] == 'prefecture' && params[:area_code]
-               initialized_groups.where(prefecture_code: params[:area_code])
-             elsif params[:area_category] == 'city' && params[:area_code]
-               initialized_groups.where(city_code: params[:area_code])
-             else
-               initialized_groups.all
-             end
+
+    #initialized_groups
+    groups = initialized_groups
+    #groups = filtered_groups(initialized_groups)
 
     groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
+
+=begin
+  def filtered_groups(initialized_groups)
+    initialized_groups.tap do |groups|
+      groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
+      groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
+      groups.where(group_type: params[:group_types]) if params[:group_types]
+      groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments]
+      groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+    end
+  end
+=end
 
   def all_groups
     Group.all.map { |group| group_with_location(group) }
@@ -122,14 +130,22 @@ class GroupsController < ApplicationController
 
   def initialized_groups
     user = User.find_by(user_id: params[:user_id])
-    Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
-          .joins("LEFT JOIN users ON participations.user_id = users.id")
-          .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
-          .where("min_age <= ?", user.age)
-          .group("groups.id")
-          .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
-          .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
-          .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
+    groups = Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
+                  .joins("LEFT JOIN users ON participations.user_id = users.id")
+                  .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
+                  .where("min_age <= ?", user.age)
+                  .group("groups.id")
+                  .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
+                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
+                  .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
+
+    groups = groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
+    groups = groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
+    groups = groups.where(group_type: params[:group_types]) if params[:group_types] && !params[:group_types].empty?
+    groups = groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments] && !params[:facility_environments].empty?
+    groups = groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+
+    groups
   end
 end
 
