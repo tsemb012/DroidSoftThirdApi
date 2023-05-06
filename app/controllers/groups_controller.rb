@@ -87,7 +87,7 @@ class GroupsController < ApplicationController
   def group_params
     params.permit(
       :host_id, :image_url, :name, :introduction, :prefecture_code, :city_code, :is_online, :frequency_times, :max_age, :min_age,
-      :max_number, :is_same_sexuality, { group_types: [] }, { facility_environments: [] }, :frequency_basis)
+      :max_number, :is_same_sexuality, :group_type, :facility_environment, :frequency_basis)
   end
 
   def groups_with_pagination
