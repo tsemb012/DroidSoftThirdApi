@@ -53,7 +53,8 @@ class UsersController < ApplicationController
 
   def show_joined_groups_simple
     groups = Group.joins(:users).where(users: { user_id: params[:user_id] })
-    render groups.as_json.map { |group| group.slice(:id, :group_name) }
+    simplified_groups = groups.as_json.map { |group| group.slice("id", "name") }
+    render json: simplified_groups
   end
 
   def new
