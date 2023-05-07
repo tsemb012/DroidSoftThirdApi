@@ -6,11 +6,18 @@ class EventsController < ApplicationController
   def index
     registrations = Registration.where(event_id: params[:event_id])
     user = User.find_by(user_id: params[:user_id])
-    events = Event.joins(:group => :participations).where('participations.user_id = ?', user.id).map do |event| #whereで絞るためにjoinsを使ってテーブルを結合していく。
+
+    events = Event.joins(:group => :participations).where('participations.user_id = ?', user.id)
+
+    if params[:group_id].present?
+      events = events.where(group_id: params[:group_id])
+    end
+
+    events = events.map do |event|
       event.as_json.merge(
         {
           group_name: event.group.name,
-          place_name: event.place&.name || "" ,
+          place_name: event.place&.name || "",
           registered_user_ids: registrations&.pluck(:user_id) || []
         }
       )
