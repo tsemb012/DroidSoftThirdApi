@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'users' => 'users#index'
   get 'users/:user_id' => 'users#show'
   get 'users/:user_id/groups' => 'users#show_joined_groups'
+  get 'users/:user_id/groups/ids' => 'users#show_joined_group_ids'
+  get 'users/:user_id/groups/simple' => 'users#show_joined_groups_simple'
   get 'users/new' => 'users#new'
   post 'users' => 'users#create'
   get 'users/:id/edit' => 'users#edit'
