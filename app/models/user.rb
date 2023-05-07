@@ -17,6 +17,10 @@ class User < ApplicationRecord
             format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
 
+  def age
+    birthday ? ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor : nil
+  end
+
   private
 =begin
 begin

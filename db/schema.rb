@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_08_071553) do
+ActiveRecord::Schema.define(version: 2023_05_03_132358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,13 +31,12 @@ ActiveRecord::Schema.define(version: 2023_04_08_071553) do
     t.string "host_id"
     t.string "name"
     t.string "comment"
-    t.string "date"
-    t.string "start_time"
-    t.string "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "group_id", null: false
     t.string "video_chat_room_id"
+    t.datetime "start_date_time"
+    t.datetime "end_date_time"
     t.index ["group_id"], name: "index_events_on_group_id"
   end
 
@@ -45,20 +44,20 @@ ActiveRecord::Schema.define(version: 2023_04_08_071553) do
     t.string "image_url"
     t.string "name"
     t.text "introduction"
-    t.string "group_type"
-    t.string "facility_environment"
-    t.string "frequency_basis"
     t.integer "frequency_times"
     t.integer "max_age"
     t.integer "min_age"
     t.integer "max_number"
-    t.integer "min_number"
     t.boolean "is_same_sexuality"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "host_id"
     t.integer "prefecture_code"
     t.integer "city_code"
+    t.boolean "is_online"
+    t.integer "group_type"
+    t.integer "facility_environment"
+    t.integer "frequency_basis"
   end
 
   create_table "participations", force: :cascade do |t|
@@ -110,7 +109,6 @@ ActiveRecord::Schema.define(version: 2023_04_08_071553) do
 
   create_table "users", force: :cascade do |t|
     t.string "user_name"
-    t.integer "age"
     t.string "gender"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -120,6 +118,7 @@ ActiveRecord::Schema.define(version: 2023_04_08_071553) do
     t.string "comment"
     t.integer "prefecture_code"
     t.integer "city_code"
+    t.date "birthday"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end

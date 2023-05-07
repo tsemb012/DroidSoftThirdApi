@@ -6,17 +6,12 @@ class GroupsController < ApplicationController
     render json: groups
   end
 
-    # TODO finderクラスに切り分けてしまう　→　複雑系
-    # TODO スコープ
-
-    # 新しいコントローラーを分ける。別のコントロらー
-
   def show
     render json: @group.as_json.merge(
       {
         members: @group.users,
-        prefecture: Prefecture.find_by(prefecture_code: @group.prefecture_code).name,
-        city: City.find_by(city_code: @group.city_code).name
+        prefecture: Prefecture.find_by(prefecture_code: @group.prefecture_code)&.name,
+        city: City.find_by(city_code: @group.city_code)&.name
       })
   end
 
@@ -42,7 +37,7 @@ class GroupsController < ApplicationController
   end
 
   def group_count_by_area
-    group_counts_by_city = Group.all.group_by(&:city_code).map do |city_code, groups|
+    group_counts_by_city = initialized_groups.all.group_by(&:city_code).map do |city_code, groups|
       city = City.find_by(city_code: city_code)
       {
         category: 'city',
@@ -55,7 +50,7 @@ class GroupsController < ApplicationController
       }
     end
 
-    group_counts_by_prefecture = Group.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
+    group_counts_by_prefecture = initialized_groups.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
       prefecture = Prefecture.find_by(prefecture_code: prefecture_code)
       {
         category: 'prefecture',
@@ -90,23 +85,31 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(
-      :host_id, :image_url, :name, :introduction, :group_type, :prefecture_code, :city_code,
-      :facility_environment, :frequency_basis, :frequency_times, :max_age, :min_age,
-      :max_number, :min_number, :is_same_sexuality
-    )
+    params.permit(
+      :host_id, :image_url, :name, :introduction, :prefecture_code, :city_code, :is_online, :frequency_times, :max_age, :min_age,
+      :max_number, :is_same_sexuality, :group_type, :facility_environment, :frequency_basis)
   end
 
   def groups_with_pagination
-    groups = if params[:area_category] == 'prefecture' && params[:area_code]
-               Group.where(prefecture_code: params[:area_code])
-             elsif params[:area_category] == 'city' && params[:area_code]
-               Group.where(city_code: params[:area_code])
-             else
-               Group.all
-             end
-    groups.page(params[:page]).per(4).map { |group| group_with_location(group) }
+
+    #initialized_groups
+    groups = initialized_groups
+    #groups = filtered_groups(initialized_groups)
+
+    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
   end
+
+=begin
+  def filtered_groups(initialized_groups)
+    initialized_groups.tap do |groups|
+      groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
+      groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
+      groups.where(group_type: params[:group_types]) if params[:group_types]
+      groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments]
+      groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+    end
+  end
+=end
 
   def all_groups
     Group.all.map { |group| group_with_location(group) }
@@ -121,5 +124,28 @@ class GroupsController < ApplicationController
     )
   end
 
+  def group_member_count(group_id)
+    Participation.where(group_id: group_id).count
+  end
+
+  def initialized_groups
+    user = User.find_by(user_id: params[:user_id])
+    groups = Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
+                  .joins("LEFT JOIN users ON participations.user_id = users.id")
+                  .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
+                  .where("min_age <= ?", user.age)
+                  .group("groups.id")
+                  .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
+                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
+                  .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
+
+    groups = groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
+    groups = groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
+    groups = groups.where(group_type: params[:group_types]) if params[:group_types] && !params[:group_types].empty?
+    groups = groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments] && !params[:facility_environments].empty?
+    groups = groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+
+    groups
+  end
 end
 
