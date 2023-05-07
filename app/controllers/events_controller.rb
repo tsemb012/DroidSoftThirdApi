@@ -1,33 +1,22 @@
 require 'securerandom'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :register, :unregister]
+  before_action :set_event, only: %i[show update destroy register unregister]
+  before_action :set_user, only: %i[index register unregister]
 
   def index
-    registrations = Registration.where(event_id: params[:event_id])
-    user = User.find_by(user_id: params[:user_id])
-    events = Event.joins(:group => :participations).where('participations.user_id = ?', user.id).map do |event| #whereで絞るためにjoinsを使ってテーブルを結合していく。
-      event.as_json.merge(
-        {
-          group_name: event.group.name,
-          place_name: event.place&.name || "" ,
-          registered_user_ids: registrations&.pluck(:user_id) || []
-        }
-      )
-    end
+    events = Event.joins(group: :participations)
+                  .where(participations: { user_id: @user.id })
+                  .where(group_id: params[:group_id].presence)
+                  .includes(:group, :place, :registrations)
+                  .map { |event| event_data(event) }
     render json: events
   end
 
   def show
-    render json: @event.as_json.merge(
-      {
-        group_id: @event.group.id,
-        group_name: @event.group.name,
-        place: @event.place.as_json,
-        registered_user_ids: @event.registrations.pluck(:user_id).map { |id| User.find(id).user_id }, # registrationを
-      }
-    )
+    render json: event_data(@event).merge(place: @event.place.as_json)
   end
+
 
   def create
     event = build_event_with_dates(event_params)
@@ -93,8 +82,22 @@ class EventsController < ApplicationController
 
   private
 
+
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def set_user
+    @user = User.find_by(user_id: params[:user_id])
+  end
+
+  def event_data(event)
+    {
+      id: event.id,
+      group_name: event.group.name,
+      place_name: event.place&.name || "",
+      registered_user_ids: event.registrations.pluck(:user_id)
+    }
   end
 
   def event_params

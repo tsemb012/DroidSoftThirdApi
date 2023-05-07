@@ -45,6 +45,18 @@ class UsersController < ApplicationController
     render json: groups
   end
 
+  # GET /users/1/groups/ids
+  def show_joined_group_ids
+    group_ids = Group.joins(:users).where(users: { user_id: params[:user_id] }).map { |group| group.id }
+    render json: group_ids
+  end
+
+  def show_joined_groups_simple
+    groups = Group.joins(:users).where(users: { user_id: params[:user_id] })
+    simplified_groups = groups.as_json.map { |group| group.slice("id", "name") }
+    render json: simplified_groups
+  end
+
   def new
     #@user = User.new　＃APIでなければ、ここでビューを返す。
   end
