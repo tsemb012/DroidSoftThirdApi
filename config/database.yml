@@ -80,7 +80,7 @@ test:
 #
 production:
   <<: *default
-  url: postgres://wbxgyttsimaltx:be526af6cd1ec5f5dd1dbfe598df20e57d657fe5a1655033e0b2292769977283@ec2-3-92-151-217.compute-1.amazonaws.com:5432/dc9he9vsco1ehd
+  url: <%= ENV['DATABASE_URL'] %>
   database: dst_api__production
   username: dst_api_
   password: <%= ENV['DST_API__DATABASE_PASSWORD'] %>
