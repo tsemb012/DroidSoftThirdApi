@@ -30,10 +30,9 @@ class MapsController < ApplicationController
 
   def search_by_text
     response = @conn.get 'textsearch/json',
-                         query: params[:query],
+                         query: CGI::escape(params[:input]),
                          location: params[:center_lat] + ',' + params[:center_lng],
                          radius: params[:radius],
-                         type: params[:type],
                          region: params[:region],
                          language: params[:language],
                          key: ENV['GOOGLE_API_KEY']
