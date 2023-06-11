@@ -130,12 +130,13 @@ class GroupsController < ApplicationController
 
   def initialized_groups
     user = User.find_by(user_id: params[:user_id])
+    allow_max_number_group_show = params[:allow_max_number_group_show] || true # falseをデフォルト値とする
     groups = Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
                   .joins("LEFT JOIN users ON participations.user_id = users.id")
                   .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
                   .where("min_age <= ?", user.age)
                   .group("groups.id")
-                  .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
+                  .having("(groups.max_number > COUNT(participations.id)) AND ?", allow_max_number_group_show) # ここで人数で絞り込みをかける
                   .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
                   .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
 
@@ -144,7 +145,6 @@ class GroupsController < ApplicationController
     groups = groups.where(group_type: params[:group_types]) if params[:group_types] && !params[:group_types].empty?
     groups = groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments] && !params[:facility_environments].empty?
     groups = groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
-
     groups
   end
 end
