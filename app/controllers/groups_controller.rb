@@ -130,15 +130,20 @@ class GroupsController < ApplicationController
 
   def initialized_groups
     user = User.find_by(user_id: params[:user_id])
-    allow_max_number_group_show = params[:allow_max_number_group_show] || true # falseをデフォルト値とする
+    allow_max_number_group_show = params[:allow_max_number_group_show] || true
+
     groups = Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
                   .joins("LEFT JOIN users ON participations.user_id = users.id")
-                  .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
+                  .where("max_age >= ?", user.age)
                   .where("min_age <= ?", user.age)
-                  .group("groups.id")
-                  .having("(groups.max_number > COUNT(participations.id)) AND ?", allow_max_number_group_show) # ここで人数で絞り込みをかける
-                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
-                  .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
+                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
+                  .where.not("groups.id IN (?)", user.groups.ids)
+
+    if allow_max_number_group_show == true
+      groups = groups.group("groups.id")
+    else
+      groups = groups.group("groups.id").having("groups.max_number > COUNT(participations.id)")
+    end
 
     groups = groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
     groups = groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
