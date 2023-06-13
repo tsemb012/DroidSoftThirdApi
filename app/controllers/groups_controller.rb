@@ -3,7 +3,11 @@ class GroupsController < ApplicationController
 
   def index
     groups = groups_with_pagination
-    render json: groups
+    if groups.nil?
+      render json: { error: "グループの取得に失敗しました。" }, status: :internal_server_error #TODO I18n.localeでローカライズする。
+    else
+      render json: groups
+    end
   end
 
   def show
@@ -91,12 +95,14 @@ class GroupsController < ApplicationController
   end
 
   def groups_with_pagination
-
-    #initialized_groups
-    groups = initialized_groups
-    #groups = filtered_groups(initialized_groups)
-
-    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
+    begin
+      groups = initialized_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
+    rescue StandardError => e
+      # エラー発生時の処理を記述します。以下はエラーメッセージをログに出力する一例です。
+      Rails.logger.error "Failed to fetch groups: #{e.message}"
+      return nil
+    end
+    groups
   end
 
 =begin
