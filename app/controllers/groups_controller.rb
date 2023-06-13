@@ -43,6 +43,11 @@ class GroupsController < ApplicationController
   def group_count_by_area
     group_counts_by_city = initialized_groups.all.group_by(&:city_code).map do |city_code, groups|
       city = City.find_by(city_code: city_code)
+
+      if city.nil?
+        next
+      end
+
       {
         category: 'city',
         code: city_code,
@@ -52,10 +57,15 @@ class GroupsController < ApplicationController
         longitude: city.longitude,
         group_count: groups.size
       }
-    end
+    end.compact # Remove nil elements from the array
 
     group_counts_by_prefecture = initialized_groups.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
       prefecture = Prefecture.find_by(prefecture_code: prefecture_code)
+
+      if prefecture.nil?
+        next
+      end
+
       {
         category: 'prefecture',
         code: prefecture_code,
@@ -65,7 +75,8 @@ class GroupsController < ApplicationController
         longitude: prefecture.capital_longitude,
         group_count: groups.size
       }
-    end
+    end.compact
+
     group_counts_by_area = group_counts_by_city + group_counts_by_prefecture
     render json: group_counts_by_area
   end
