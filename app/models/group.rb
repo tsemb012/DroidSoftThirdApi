@@ -9,13 +9,16 @@ class Group < ApplicationRecord
   scope :by_city, ->(area_category, area_code) { where(city_code: area_code) if area_category == 'city' }
 
   enum group_type: {
-    seminar: 0, workshop: 1, mokumoku: 2,
-    other_group_type: 99, none_group_type: -1
+    individual_task: 0, shared_goal: 1, none_group_type: -1
   }
 
   enum frequency_basis: {
-    daily: 0, weekly: 1, monthly: 2,
+    daily: 0, weekly: 1, monthly: 2, irregularly: 3,
     none_frequency_basis: -1
+  }
+
+  enum style: {
+    focus: 0, enjoy: 1, none_style: -1
   }
 
   enum facility_environment: {
