@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-442 位置情報のサブモジュールを追加">
-      <change afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_03_25_18_48__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/submodule/location_csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="15edea82-3035-49f3-b324-37aadccedd0f" name="Changes" comment="DST-575 修正&#10;&#10;・エラーメッセージ出せるように&#10;・Mapにオンライングループを出さないように&#10;・人数Maxを表示するかどうかを選択できるように">
+      <change afterPath="$PROJECT_DIR$/db/migrate/20230617115433_add_style_to_groups.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DroidSoftThirdApi.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/groups_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/groups_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/group.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/group.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +24,10 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="fca5ff17e23df48e9a86617714098efe19d8d9ad" />
       </map>
     </option>
+    <option name="RECENT_COMMON_BRANCH" value="master" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LogFilters">
@@ -58,6 +58,111 @@
   }
 }</component>
   <component name="RunManager" selected="Rails.Development: DroidSoftThirdApi">
+    <configuration name="MapsController GET /search_by_text should return 200" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="DroidSoftThirdApi" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
+        <COVERAGE_PATTERN ENABLED="true">
+          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
+        </COVERAGE_PATTERN>
+      </EXTENSION>
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/spec/requests/map_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="MapsController GET /search_by_text should return 200" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="MapsController GET /search_by_text" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="DroidSoftThirdApi" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
+        <COVERAGE_PATTERN ENABLED="true">
+          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
+        </COVERAGE_PATTERN>
+      </EXTENSION>
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/spec/requests/map_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="MapsController GET /search_by_text" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="MapsController GET /search_individual" type="RSpecRunConfigurationType" factoryName="RSpec" temporary="true" nameIsGenerated="true">
+      <module name="DroidSoftThirdApi" />
+      <predefined_log_file enabled="true" id="RUBY_RSPEC" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="RAILS_ENV" value="test" />
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
+        <COVERAGE_PATTERN ENABLED="true">
+          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
+        </COVERAGE_PATTERN>
+      </EXTENSION>
+      <EXTENSION ID="org.jetbrains.plugins.ruby.rails.run.RailsRunConfigurationExtension" SCRATCH_USE_RAILS_RUNNER="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$MODULE_DIR$/spec/requests/map_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATHS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="MapsController GET /search_individual" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ZEUS" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPRING" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="Development: DroidSoftThirdApi" type="RailsRunConfigurationType" factoryName="Rails">
       <module name="DroidSoftThirdApi" />
       <predefined_log_file enabled="true" id="RUBY_RAILS_SERVER" />
@@ -155,6 +260,15 @@
       <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_TESTOPTS" VALUE="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="RSpec.MapsController GET /search_individual" />
+        <item itemvalue="RSpec.MapsController GET /search_by_text should return 200" />
+        <item itemvalue="RSpec.MapsController GET /search_by_text" />
+        <item itemvalue="RSpec.MapsController GET /search_by_text should return 200" />
+        <item itemvalue="RSpec.MapsController GET /search_by_text" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SpringUtil" SPRING_PRE_LOADER_OPTION="true" RAKE_SPRING_PRE_LOADER_OPTION="true" RAILS_SPRING_PRE_LOADER_OPTION="true" />
@@ -180,6 +294,18 @@
       <workItem from="1679210102437" duration="7723000" />
       <workItem from="1680170160329" duration="18260000" />
       <workItem from="1680527933518" duration="3521000" />
+      <workItem from="1683555831251" duration="1865000" />
+      <workItem from="1683801131539" duration="5194000" />
+      <workItem from="1683902476455" duration="12013000" />
+      <workItem from="1684585234825" duration="624000" />
+      <workItem from="1685411448315" duration="599000" />
+      <workItem from="1685864767296" duration="6582000" />
+      <workItem from="1686132604943" duration="1039000" />
+      <workItem from="1686494141873" duration="2685000" />
+      <workItem from="1686577797670" duration="7088000" />
+      <workItem from="1686662910192" duration="5771000" />
+      <workItem from="1686749551989" duration="613000" />
+      <workItem from="1686990826820" duration="4484000" />
     </task>
     <task id="LOCAL-00001" summary="DST-446 Eventクラスの作成">
       <created>1676722709550</created>
@@ -300,7 +426,112 @@
       <option name="project" value="LOCAL" />
       <updated>1680325592341</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="DST-473 ストロングパラメーターの不具合を修正">
+      <created>1683378569999</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1683378569999</updated>
+    </task>
+    <task id="LOCAL-00019" summary="DST-473 グループIDでフィルターできるように修正">
+      <created>1683441800166</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1683441800166</updated>
+    </task>
+    <task id="LOCAL-00020" summary="DST-473 リファクタリング">
+      <created>1683445312970</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1683445312970</updated>
+    </task>
+    <task id="LOCAL-00021" summary="DST-473 参加しているぐるーぷIdを取得するように">
+      <created>1683448952547</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683448952547</updated>
+    </task>
+    <task id="LOCAL-00022" summary="DST-541 簡略化されたグループ情報を取得できるように">
+      <created>1683450922595</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1683450922595</updated>
+    </task>
+    <task id="LOCAL-00023" summary="DST-541 簡略化されたグループ情報を取得できるように">
+      <created>1683470058417</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1683470058417</updated>
+    </task>
+    <task id="LOCAL-00024" summary="DST-541 fiebase_authを削除">
+      <created>1683821127287</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1683821127287</updated>
+    </task>
+    <task id="LOCAL-00025" summary="DST-541 dbのurlを追加">
+      <created>1683963553114</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1683963553114</updated>
+    </task>
+    <task id="LOCAL-00026" summary="DST-541 dbのurlを修正&#10;&#10;後でロールバックする必要がある">
+      <created>1683964102839</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1683964102839</updated>
+    </task>
+    <task id="LOCAL-00027" summary="DST-541 psychのversionを設定">
+      <created>1683964538428</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1683964538428</updated>
+    </task>
+    <task id="LOCAL-00028" summary="DST-541 インプットが通るようにして、タイプを削除するように">
+      <created>1685871068198</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1685871068198</updated>
+    </task>
+    <task id="LOCAL-00029" summary="DST-575 人数が最大のグループを含めるかどうか">
+      <created>1686495781203</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1686495781203</updated>
+    </task>
+    <task id="LOCAL-00030" summary="DST-575 人数が最大のグループを含めるかどうか">
+      <created>1686583389980</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1686583389980</updated>
+    </task>
+    <task id="LOCAL-00031" summary="DST-575 グループの取得に失敗した時にエラーメッセージが返されるように">
+      <created>1686664393738</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1686664393738</updated>
+    </task>
+    <task id="LOCAL-00032" summary="DST-575 修正&#10;&#10;・エラーメッセージ出せるように&#10;・Mapにオンライングループを出さないように&#10;・人数Maxを表示するかどうかを選択できるように">
+      <created>1686668112698</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1686668112698</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -317,7 +548,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="DST-392-2" />
+                        <option value="DST-575" />
                       </list>
                     </value>
                   </entry>
@@ -330,10 +561,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="DST-446 Eventクラスの作成" />
-    <MESSAGE value="DST-446 controller修正" />
-    <MESSAGE value="DST-446 Placeモデルの追加" />
-    <MESSAGE value="DST-446 EventとPlaceの1対1の依存関係を追加するように" />
     <MESSAGE value="DST-446 GroupとEventの一対多の関係を追加" />
     <MESSAGE value="DST-446 UserとEventの多対多の関係を追加" />
     <MESSAGE value="DST-446 イベントを登録できるように修正" />
@@ -346,14 +573,27 @@
     <MESSAGE value="DST-446 コメント追加" />
     <MESSAGE value="DST-446 ユーザーが所属するすべてのグループが保有するすべてのイベントを取得するように" />
     <MESSAGE value="DST-392-2 イベントを削除できるように修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="DST-392-2 イベントを削除できるように修正" />
+    <MESSAGE value="DST-473 ストロングパラメーターの不具合を修正" />
+    <MESSAGE value="DST-541 グループIDでフィルターできるように修正" />
+    <MESSAGE value="DST-541 リファクタリング" />
+    <MESSAGE value="DST-541 参加しているぐるーぷIdを取得するように" />
+    <MESSAGE value="DST-541 簡略化されたグループ情報を取得できるように" />
+    <MESSAGE value="DST-541 fiebase_authを削除" />
+    <MESSAGE value="DST-541 dbのurlを追加" />
+    <MESSAGE value="DST-541 dbのurlを修正&#10;&#10;後でロールバックする必要がある" />
+    <MESSAGE value="DST-541 psychのversionを設定" />
+    <MESSAGE value="DST-541 インプットが通るようにして、タイプを削除するように" />
+    <MESSAGE value="DST-575 人数が最大のグループを含めるかどうか" />
+    <MESSAGE value="DST-575 グループの取得に失敗した時にエラーメッセージが返されるように" />
+    <MESSAGE value="DST-575 修正&#10;&#10;・エラーメッセージ出せるように&#10;・Mapにオンライングループを出さないように&#10;・人数Maxを表示するかどうかを選択できるように" />
+    <option name="LAST_COMMIT_MESSAGE" value="DST-575 修正&#10;&#10;・エラーメッセージ出せるように&#10;・Mapにオンライングループを出さないように&#10;・人数Maxを表示するかどうかを選択できるように" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>91</line>
+          <line>87</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -361,7 +601,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>71</line>
+          <line>67</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -369,7 +609,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>68</line>
+          <line>64</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -377,7 +617,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>67</line>
+          <line>63</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -385,11 +625,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/controllers/events_controller.rb</url>
-          <line>96</line>
+          <line>92</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/controllers/groups_controller.rb</url>
+          <line>159</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/controllers/groups_controller.rb</url>
+          <line>161</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -400,6 +656,9 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1680325097764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@MapsController_GET__search_individual.rcov" NAME="MapsController GET /search_individual Coverage Results" MODIFIED="1685865663368" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@MapsController_GET__search_by_text_should_return_200.rcov" NAME="MapsController GET /search_by_text should return 200 Coverage Results" MODIFIED="1686582967774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@MapsController_GET__search_by_text.rcov" NAME="MapsController GET /search_by_text Coverage Results" MODIFIED="1685865701822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
+    <SUITE FILE_PATH="coverage/DroidSoftThirdApi@Development__DroidSoftThirdApi.rcov" NAME="Development: DroidSoftThirdApi Coverage Results" MODIFIED="1686667665590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="DroidSoftThirdApi" />
   </component>
 </project>

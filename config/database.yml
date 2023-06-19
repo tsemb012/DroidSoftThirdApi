@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: dst_api__production
   username: dst_api_
   password: <%= ENV['DST_API__DATABASE_PASSWORD'] %>

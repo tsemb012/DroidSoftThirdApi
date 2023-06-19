@@ -10,6 +10,9 @@ gem 'pg', '>= 0.18', '< 2.0'
 # User jwt for authentication
 gem 'jwt'
 
+# psych
+gem 'psych', '~> 3.1'
+
 # Use Httparty for HTTP requests
 gem 'httparty'
 

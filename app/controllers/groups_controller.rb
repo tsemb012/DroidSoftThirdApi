@@ -3,7 +3,11 @@ class GroupsController < ApplicationController
 
   def index
     groups = groups_with_pagination
-    render json: groups
+    if groups.nil?
+      render json: { error: "グループの取得に失敗しました。" }, status: :internal_server_error #TODO I18n.localeでローカライズする。
+    else
+      render json: groups
+    end
   end
 
   def show
@@ -39,6 +43,11 @@ class GroupsController < ApplicationController
   def group_count_by_area
     group_counts_by_city = initialized_groups.all.group_by(&:city_code).map do |city_code, groups|
       city = City.find_by(city_code: city_code)
+
+      if city.nil?
+        next
+      end
+
       {
         category: 'city',
         code: city_code,
@@ -48,10 +57,15 @@ class GroupsController < ApplicationController
         longitude: city.longitude,
         group_count: groups.size
       }
-    end
+    end.compact # Remove nil elements from the array
 
     group_counts_by_prefecture = initialized_groups.all.group_by(&:prefecture_code).map do |prefecture_code, groups|
       prefecture = Prefecture.find_by(prefecture_code: prefecture_code)
+
+      if prefecture.nil?
+        next
+      end
+
       {
         category: 'prefecture',
         code: prefecture_code,
@@ -61,7 +75,8 @@ class GroupsController < ApplicationController
         longitude: prefecture.capital_longitude,
         group_count: groups.size
       }
-    end
+    end.compact
+
     group_counts_by_area = group_counts_by_city + group_counts_by_prefecture
     render json: group_counts_by_area
   end
@@ -87,37 +102,29 @@ class GroupsController < ApplicationController
   def group_params
     params.permit(
       :host_id, :image_url, :name, :introduction, :prefecture_code, :city_code, :is_online, :frequency_times, :max_age, :min_age,
-      :max_number, :is_same_sexuality, :group_type, :facility_environment, :frequency_basis)
+      :max_number, :is_same_sexuality, :group_type, :facility_environment, :frequency_basis, :style)
   end
 
   def groups_with_pagination
-
-    #initialized_groups
-    groups = initialized_groups
-    #groups = filtered_groups(initialized_groups)
-
-    groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
-  end
-
-=begin
-  def filtered_groups(initialized_groups)
-    initialized_groups.tap do |groups|
-      groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
-      groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
-      groups.where(group_type: params[:group_types]) if params[:group_types]
-      groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments]
-      groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+    begin
+      groups = initialized_groups.order(created_at: :desc).page(params[:page]).per(5)
+                                 .map { |group| group_with_location_and_members(group) }
+    rescue StandardError => e
+      # エラー発生時の処理を記述します。以下はエラーメッセージをログに出力する一例です。
+      Rails.logger.error "Failed to fetch groups: #{e.message}"
+      return nil
     end
+    groups
   end
-=end
 
   def all_groups
-    Group.all.map { |group| group_with_location(group) }
+    Group.all.map { |group| group_with_location_and_members(group) }
   end
 
-  def group_with_location(group)
+  def group_with_location_and_members(group)
     group.as_json.merge(
       {
+        members: group.users,
         prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
         city: City.find_by(city_code: group.city_code).name
       }
@@ -130,21 +137,26 @@ class GroupsController < ApplicationController
 
   def initialized_groups
     user = User.find_by(user_id: params[:user_id])
+    allow_max_number_group_show = params[:allow_max_number_group_show] || true
+
     groups = Group.joins("LEFT JOIN participations ON groups.id = participations.group_id")
                   .joins("LEFT JOIN users ON participations.user_id = users.id")
-                  .where("max_age >= ?", user.age) # ここで年齢で絞り込みをかける
+                  .where("max_age >= ?", user.age)
                   .where("min_age <= ?", user.age)
-                  .group("groups.id")
-                  .having("groups.max_number > COUNT(participations.id)") # ここで人数で絞り込みをかける
-                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender) # TODO ここで性別で絞り込みをかける
-                  .where.not("groups.id IN (?)", user.groups.ids) # ここで参加済みのグループを除外する
+                  .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
+                  .where.not("groups.id IN (?)", user.groups.ids)
+
+    if allow_max_number_group_show == true
+      groups = groups.group("groups.id")
+    else
+      groups = groups.group("groups.id").having("groups.max_number > COUNT(participations.id)")
+    end
 
     groups = groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
     groups = groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
     groups = groups.where(group_type: params[:group_types]) if params[:group_types] && !params[:group_types].empty?
     groups = groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments] && !params[:facility_environments].empty?
     groups = groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
-
     groups
   end
 end
