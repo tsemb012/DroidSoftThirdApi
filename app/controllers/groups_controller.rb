@@ -107,7 +107,8 @@ class GroupsController < ApplicationController
 
   def groups_with_pagination
     begin
-      groups = initialized_groups.page(params[:page]).per(5).map { |group| group_with_location(group) }
+      groups = initialized_groups.order(created_at: :desc).page(params[:page]).per(5)
+                                 .map { |group| group_with_location_and_members(group) }
     rescue StandardError => e
       # エラー発生時の処理を記述します。以下はエラーメッセージをログに出力する一例です。
       Rails.logger.error "Failed to fetch groups: #{e.message}"
@@ -116,25 +117,14 @@ class GroupsController < ApplicationController
     groups
   end
 
-=begin
-  def filtered_groups(initialized_groups)
-    initialized_groups.tap do |groups|
-      groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
-      groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
-      groups.where(group_type: params[:group_types]) if params[:group_types]
-      groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments]
-      groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
-    end
-  end
-=end
-
   def all_groups
-    Group.all.map { |group| group_with_location(group) }
+    Group.all.map { |group| group_with_location_and_members(group) }
   end
 
-  def group_with_location(group)
+  def group_with_location_and_members(group)
     group.as_json.merge(
       {
+        members: group.users,
         prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
         city: City.find_by(city_code: group.city_code).name
       }
