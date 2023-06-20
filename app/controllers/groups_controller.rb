@@ -154,9 +154,10 @@ class GroupsController < ApplicationController
 
     groups = groups.where(prefecture_code: params[:area_code]) if params[:area_category] == 'prefecture' && params[:area_code]
     groups = groups.where(city_code: params[:area_code]) if params[:area_category] == 'city' && params[:area_code]
-    groups = groups.where(group_type: params[:group_types]) if params[:group_types] && !params[:group_types].empty?
+    groups = groups.where(group_type: params[:group_type]) if params[:group_type]
     groups = groups.where(facility_environment: params[:facility_environments]) if params[:facility_environments] && !params[:facility_environments].empty?
     groups = groups.where(frequency_basis: params[:frequency_basis]) if params[:frequency_basis]
+    groups = groups.where(style: params[:style]) if params[:style]
     groups
   end
 end
