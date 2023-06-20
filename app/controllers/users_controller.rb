@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/groups
   def show_joined_groups
-    groups = Group.joins(:users).where(users: { user_id: params[:user_id] }).map { |group| group_with_location(group) }
+    groups = Group.joins(:users).where(users: { user_id: params[:user_id] }).map { |group| group_with_location_and_members(group) }
     render json: groups
   end
 
@@ -107,9 +107,10 @@ class UsersController < ApplicationController
     end
   end
 
-  def group_with_location(group)
+  def group_with_location_and_members(group)
     group.as_json.merge(
       {
+        members: group.users,
         prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
         city: City.find_by(city_code: group.city_code)&.name
       }
