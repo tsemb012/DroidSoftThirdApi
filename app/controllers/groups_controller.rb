@@ -21,22 +21,29 @@ class GroupsController < ApplicationController
 
   def participate
     user = User.find_by(user_id: params[:user_id])
-    if !@group.users.include?(user)
-      @group.users << user
-      render json: { message: "success" }, status: :created
-    else
-      render json: { message: "すでに参加しています" }, status: :bad_request
+    if user.groups.count > 20
+      render json: { message: "参加可能なグループは最大20件です" }, status: :bad_request
+    else if !@group.users.include?(user)
+           @group.users << user
+           render json: { message: "success" }, status: :created
+         else
+           render json: { message: "すでに参加しています" }, status: :bad_request
+         end
     end
   end
 
   def create
-    group = Group.new(group_params)
-    if group.save
-      user = User.find_by(user_id: group.host_id)
-      group.users << user
-      render json: { message: "success" }, status: :created
+    user = User.find_by(user_id: group_params[:host_id])
+    if user.groups.count > 20
+      render json: { message: "所属可能なグループは最大20件です" }, status: :bad_request
     else
-      render json: group.errors, status: :unprocessable_entity
+      group = Group.new(group_params)
+      if group.save
+        group.users << user
+        render json: { message: "success" }, status: :created
+      else
+        render json: group.errors, status: :unprocessable_entity
+      end
     end
   end
 
