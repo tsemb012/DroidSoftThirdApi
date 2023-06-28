@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :update, :destroy, :participate]
+  before_action :set_group, only: [:show, :update, :destroy, :participate, :leave]
 
   def index
     groups = groups_with_pagination
@@ -31,6 +31,17 @@ class GroupsController < ApplicationController
          end
     end
   end
+
+  def leave
+    user = User.find_by(user_id: params[:user_id])
+    if @group.users.include?(user)
+      @group.users.delete(user)
+      render json: { message: "success" }, status: :ok
+    else
+      render json: { message: "グループのメンバーではありません" }, status: :bad_request
+    end
+  end
+
 
   def create
     user = User.find_by(user_id: group_params[:host_id])
