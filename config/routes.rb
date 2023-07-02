@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :groups
   patch '/groups/:id/participate', to: 'groups#participate'
   patch '/groups/:id/leave', to: 'groups#leave'
+  get '/groups/:id/chat', to: 'groups#chat_group'
   get '/groups/locations/count', to: 'groups#group_count_by_area'
 
   get 'maps/search_individual' => 'maps#search_individual'

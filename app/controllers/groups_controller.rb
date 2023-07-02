@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :update, :destroy, :participate, :leave]
+  before_action :set_group, only: [:show, :update, :destroy, :participate, :leave, :chat_group]
 
   def index
     groups = groups_with_pagination
@@ -39,6 +39,19 @@ class GroupsController < ApplicationController
       render json: { message: "success" }, status: :ok
     else
       render json: { message: "グループのメンバーではありません" }, status: :bad_request
+    end
+  end
+
+  def chat_group
+    if @group
+      render json: {
+        group_id: @group.id,
+        group_name: @group.name,
+        host_id: @group.host_id,
+        members: @group.users
+      }
+    else
+      render json: { message: "グループが見つかりません" }, status: :not_found
     end
   end
 
@@ -143,8 +156,8 @@ class GroupsController < ApplicationController
     group.as_json.merge(
       {
         members: group.users,
-        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
-        city: City.find_by(city_code: group.city_code).name
+        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
+        city: City.find_by(city_code: group.city_code)&.name
       }
     )
   end
