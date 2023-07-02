@@ -156,8 +156,8 @@ class GroupsController < ApplicationController
     group.as_json.merge(
       {
         members: group.users,
-        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code).name,
-        city: City.find_by(city_code: group.city_code).name
+        prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
+        city: City.find_by(city_code: group.city_code)&.name
       }
     )
   end
