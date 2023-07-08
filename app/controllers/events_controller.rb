@@ -60,7 +60,7 @@ class EventsController < ApplicationController
     data = {
       group_name: event.group.name,
       place_name: event.place&.name || "" ,
-      registered_user_ids: event.registrations.pluck(:user_id),
+      registered_user_ids: event.registrations.pluck(:user_id).map { |id| User.find(id).user_id },
       event_registered_number: event.registrations.count,
       group_joined_number: event.group.users.count,
       event_status: event.status_for(@user),
@@ -68,7 +68,6 @@ class EventsController < ApplicationController
     data.merge!(
       group_id: event.group.id,
       place: event.place.as_json,
-      registered_user_ids: event.registrations.pluck(:user_id),
       group_members: event.group.users,
     ) if detailed
 
