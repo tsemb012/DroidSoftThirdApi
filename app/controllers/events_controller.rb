@@ -64,6 +64,7 @@ class EventsController < ApplicationController
       event_registered_number: event.registrations.count,
       group_joined_number: event.group.users.count,
       event_status: event.status_for(@user),
+      is_online: event.place.nil?,
     }
     data.merge!(
       group_id: event.group.id,
