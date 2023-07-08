@@ -5,8 +5,8 @@ class EventsController < ApplicationController
   before_action :set_user, only: [:register, :unregister, :show, :index]
 
   def index
-    registrations = Registration.where(event_id: params[:event_id])
-    events = Event.joins(:group => :participations).where('participations.user_id = ?', @user.id).map do |event| #whereで絞るためにjoinsを使ってテーブルを結合していく。
+    events = Event.joins(:group => :participations).where('participations.user_id = ?', @user.id).map do |event|
+      registrations = event.registrations
       event.as_json.merge(
         {
           group_name: event.group.name,
@@ -14,7 +14,7 @@ class EventsController < ApplicationController
           registered_user_ids: registrations&.pluck(:user_id) || [],
           event_registered_number: registrations.count,
           group_joined_number: event.group.users.count,
-          event_status: event_status(event),
+          event_status: event.status_for(@user),
         }
       )
     end
@@ -27,9 +27,9 @@ class EventsController < ApplicationController
         group_id: @event.group.id,
         group_name: @event.group.name,
         place: @event.place.as_json,
-        registered_user_ids: @event.registrations.pluck(:user_id).map { |id| User.find(id).user_id }, # registrationを
+        registered_user_ids: @event.registrations.pluck(:user_id).map { |id| User.find(id).user_id },
         group_members: @event.group.users,
-        event_status: event_status(@event),
+        event_status: @event.status_for(@user),
       }
     )
   end
@@ -129,25 +129,4 @@ class EventsController < ApplicationController
       group.events << event
     end
   end
-
-  def event_status(event)
-    if !event.registrations.pluck(:user_id).include?(@user.id)
-      return "before_registration"
-    elsif event.registrations.pluck(:user_id).include?(@user.id) && event.start_date_time > DateTime.now
-      return "after_registration_before_event"
-    elsif event.registrations.pluck(:user_id).include?(@user.id) && event.start_date_time <= DateTime.now && event.end_date_time >= DateTime.now
-      return "after_registration_during_event"
-    elsif event.end_date_time < DateTime.now
-      return "after_event"
-    end
-  end
-
-=begin
-  enum status: {
-    before_registration: 0,
-    after_registration_before_event: 1,
-    after_registration_during_event: 2,
-    after_event: 3
-  }
-=end
 end
