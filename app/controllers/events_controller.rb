@@ -6,53 +6,28 @@ class EventsController < ApplicationController
 
   def index
     events = Event.joins(:group => :participations).where('participations.user_id = ?', @user.id).map do |event|
-      registrations = event.registrations
-      event.as_json.merge(
-        {
-          group_name: event.group.name,
-          place_name: event.place&.name || "" ,
-          registered_user_ids: registrations&.pluck(:user_id) || [],
-          event_registered_number: registrations.count,
-          group_joined_number: event.group.users.count,
-          event_status: event.status_for(@user),
-        }
-      )
+      build_event_json(event)
     end
     render json: events
   end
 
   def show
-    render json: @event.as_json.merge(
-      {
-        group_id: @event.group.id,
-        group_name: @event.group.name,
-        place: @event.place.as_json,
-        registered_user_ids: @event.registrations.pluck(:user_id).map { |id| User.find(id).user_id },
-        group_members: @event.group.users,
-        event_status: @event.status_for(@user),
-      }
-    )
+    render json: build_event_json(@event, detailed: true)
   end
 
   def create
     event = build_event_with_dates(event_params)
     event.video_chat_room_id = SecureRandom.uuid
-
-    if params[:place].present?
-      place = Place.new(place_params)
-      event.place = place
-    end
+    event.place = Place.new(place_params) if params[:place].present?
 
     save_event_with_transaction(event)
-
     render json: { message: "success" }, status: :created
   rescue ActiveRecord::RecordInvalid => e
-    render json: { message: "failure", errors: event.errors.full_messages + place&.errors&.full_messages.to_a }, status: 400
+    render json: { message: "failure", errors: event.errors.full_messages + event.place&.errors&.full_messages.to_a }, status: 400
   end
 
   def destroy
     @event.transaction do
-      # 関連するregistrationsレコードを削除（必要に応じて）
       @event.registrations.destroy_all
       @event.destroy
     end
@@ -62,44 +37,47 @@ class EventsController < ApplicationController
   end
 
   def register
-    user_id = params[:user_id]
-    user = User.find_by(user_id: user_id)
-
-    if user.nil?
-      render json: { error: 'User not found' }, status: :not_found
-      return
-    end
-
-    if @event.users.include?(user)
+    if @event.users.include?(@user)
       render json: { error: 'User already registered' }, status: :unprocessable_entity
     else
-      @event.users << user
+      @event.users << @user
       render json: { message: 'User successfully registered' }, status: :ok
     end
   end
 
   def unregister
-    user_id = params[:user_id]
-    user = User.find_by(user_id: user_id)
-
-    if user.nil?
-      render json: { error: 'User not found' }, status: :not_found
-      return
-    end
-
-    if @event.users.include?(user)
-      @event.users.delete(user)
+    if @event.users.include?(@user)
+      @event.users.delete(@user)
       render json: { message: 'User successfully unregistered' }, status: :ok
     else
       render json: { error: 'User not registered' }, status: :unprocessable_entity
     end
   end
 
-
   private
+
+  def build_event_json(event, detailed: false)
+    data = {
+      group_name: event.group.name,
+      place_name: event.place&.name || "" ,
+      registered_user_ids: event.registrations.pluck(:user_id),
+      event_registered_number: event.registrations.count,
+      group_joined_number: event.group.users.count,
+      event_status: event.status_for(@user),
+    }
+    data.merge!(
+      group_id: event.group.id,
+      place: event.place.as_json,
+      registered_user_ids: event.registrations.pluck(:user_id),
+      group_members: event.group.users,
+    ) if detailed
+
+    event.as_json.merge(data)
+  end
 
   def set_user
     @user = User.find_by(user_id: params[:user_id])
+    render json: { error: 'User not found' }, status: :not_found if @user.nil?
   end
 
   def set_event
