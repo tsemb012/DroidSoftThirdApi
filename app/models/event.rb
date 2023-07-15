@@ -12,7 +12,7 @@ class Event < ApplicationRecord
   }.freeze
 
   def status_for(user)
-    if !registrations.pluck(:user_id).include?(user.id)
+    if !registrations.pluck(:user_id).include?(user.id) && start_date_time > DateTime.now
       STATUSES[:before_registration]
     elsif registrations.pluck(:user_id).include?(user.id) && start_date_time > DateTime.now
       STATUSES[:after_registration_before_event]
