@@ -66,104 +66,23 @@ class MapsController < ApplicationController
     render json: candidates
   end
 
-
-
   YOLP_LOCAL_SEARCH_ENDPOINT = 'https://map.yahooapis.jp/search/local/V1/localSearch'.freeze
 
-  # 範囲検索
   def yolp_text_search
-    place = {
-      appid: ENV['YAHOO_APP_ID'],
-      query: params[:query],
-      device: 'mobile',
-      bbox: params[:west_lng] + ',' + params[:south_lat] + ',' + params[:east_lng] + ',' + params[:north_lat],
-      results: 30,
-      sort: 'match',
-      detail: 'simple',
-      lat: params[:center_lat],
-      lon: params[:center_lng],
-      output: 'json'
-    }
-
-    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, place)
-    data = JSON.parse(response.body)
-
-    if data['Feature'].is_a?(Array)
-      places = data['Feature'].map do |place|
-        {
-          id: place['Id'],
-          name: place['Name'],
-          category: place['Category'][0],
-          lat: place['Geometry']['Coordinates'].split(',')[1],
-          lng: place['Geometry']['Coordinates'].split(',')[0],
-        }
-      end
-      render json: places
-    else
-      # Featureキーがないか、その値が配列でない場合のエラーハンドリングをここに書く
-      render json: { error: 'No results found or unexpected response format' }, status: :bad_request
-    end
+    extra_params = { sort: 'match'}
+    yolp_search(extra_params)
   end
 
-  # AutoComplete検索　sortには距離を使用する。　中心点からの距離を渡して計算するようにする。
   def yolp_auto_complete
-    place = {
-      appid: ENV['YAHOO_APP_ID'],
-      query: params[:query],
-      device: 'mobile',
-      bbox: params[:west_lng] + ',' + params[:south_lat] + ',' + params[:east_lng] + ',' + params[:north_lat],
-      results: 30,
-      sort: 'dist',
-      detail: 'simple',
-      lat: params[:center_lat],
-      lon: params[:center_lng],
-      output: 'json'
-    }
-
-    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, place)
-    data = JSON.parse(response.body)
-
-    places = data['Feature'].map do |place|
-      {
-        id: place['Id'],
-        name: place['Name'],
-        category: place['Category'][0],
-        lat: place['Geometry']['Coordinates'].split(',')[1],
-        lng: place['Geometry']['Coordinates'].split(',')[0],
-      }
-    end
-    render json: places
+    extra_params = { sort: 'dist'}
+    yolp_search(extra_params)
   end
 
-  # カテゴリー検索　カフェ / 公園はgc検索　図書館はクエリ検索 / コワーキングスペースなどはスクレイピングで処理する。
   def yolp_category_search
-    place = {
-      appid: ENV['YAHOO_APP_ID'],
-      query: params[:query],
-      gc: params[:category],
-      device: 'mobile',
-      bbox: params[:west_lng] + ',' + params[:south_lat] + ',' + params[:east_lng] + ',' + params[:north_lat],
-      results: 30,
-      sort: 'match',
-      detail: 'simple',
-      lat: params[:center_lat],
-      lon: params[:center_lng],
-      output: 'json'
-    }
-
-    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, place)
-    data = JSON.parse(response.body)
-    places = data['Feature'].map do |place|
-      {
-        id: place['Id'],
-        name: place['Name'],
-        category: place['Category'][0],
-        lat: place['Geometry']['Coordinates'].split(',')[1],
-        lng: place['Geometry']['Coordinates'].split(',')[0],
-      }
-    end
-    render json: places
+    extra_params = { gc: params[:category] }
+    yolp_search(extra_params)
   end
+
 
   # uid検索　詳細情報を取得する。
   def yolp_detail_search
@@ -196,19 +115,55 @@ class MapsController < ApplicationController
 
   # 緯度経度から住所を取得する。
   def yolp_reverse_geo_coder
-    params = {
+    place_params = {
       appid: ENV['YAHOO_APP_ID'],
       lat: params[:lat],
       lon: params[:lon],
       output: 'json'
     }
 
-    response = @conn.get(YOLP_REVERSE_GEO_CODER_ENDPOINT, params)
+    response = @conn.get(YOLP_REVERSE_GEO_CODER_ENDPOINT, place_params)
     data = JSON.parse(response.body)
 
     render json: {
       address: data['Feature'][0]['Property']['Address'],
     }
+  end
+
+  private
+
+  def yolp_search(extra_params)
+    common_params = {
+      appid: ENV['YAHOO_APP_ID'],
+      query: params[:query],
+      device: 'mobile',
+      bbox: params[:west_lng] + ',' + params[:south_lat] + ',' + params[:east_lng] + ',' + params[:north_lat],
+      results: 30,
+      detail: 'simple',
+      lat: params[:center_lat],
+      lon: params[:center_lng],
+      output: 'json'
+    }
+
+    request_params = common_params.merge(extra_params)
+
+    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, request_params)
+    data = JSON.parse(response.body)
+
+    if data['Feature'].is_a?(Array)
+      places = data['Feature'].map do |place|
+        {
+          id: place['Id'],
+          name: place['Name'],
+          category: place['Category'][0],
+          lat: place['Geometry']['Coordinates'].split(',')[1],
+          lng: place['Geometry']['Coordinates'].split(',')[0],
+        }
+      end
+      render json: places
+    else
+      render json: { error: 'No results found or unexpected response format' }, status: :bad_request
+    end
   end
 end
 
