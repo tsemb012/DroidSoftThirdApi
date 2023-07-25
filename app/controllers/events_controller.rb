@@ -89,7 +89,7 @@ class EventsController < ApplicationController
   end
 
   def place_params
-    params.require(:place).permit(:name, :address, :latitude, :longitude, :place_id, :place_type, :global_code, :compound_code, :url, :memo)
+    params.require(:place).permit(:place_id, :name, :yomi, :latitude, :longitude, :address, :category, :tel, :url, :memo)
   end
 
   def build_event_with_dates(params)

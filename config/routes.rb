@@ -27,6 +27,12 @@ Rails.application.routes.draw do
   get 'maps/search_nearby' => 'maps#search_nearby'
   get 'maps/place_detail' => 'maps#fetch_place_detail'
 
+  get 'maps/yolp_text_search' => 'maps#yolp_text_search'
+  get 'maps/yolp_auto_complete' => 'maps#yolp_auto_complete'
+  get 'maps/yolp_category_search' => 'maps#yolp_category_search'
+  get 'maps/yolp_detail_search' => 'maps#yolp_detail_search'
+  get 'maps/yolp_reverse_geo_coder' => 'maps#yolp_reverse_geo_coder'
+
   get 'events' => 'events#index'
   post 'events' => 'events#create'
   get 'events/:id' => 'events#show'

@@ -1,6 +1,5 @@
 class MapsController < ApplicationController
 
-  #TODO リファクタリング。ChatGPTだとエラー
   TEXT_QUERY = "textquery"
   INDIVIDUAL_FIELDS = 'name,place_id,geometry,types,photos,formatted_address,plus_code'
   DETAIL_FIELD = 'name,type,place_id,formatted_address,geometry,icon_background_color,url,photo,address_component,plus_code'
@@ -67,6 +66,108 @@ class MapsController < ApplicationController
     render json: candidates
   end
 
+  YOLP_LOCAL_SEARCH_ENDPOINT = 'https://map.yahooapis.jp/search/local/V1/localSearch'.freeze
+
+  def yolp_text_search
+    extra_params = { sort: 'match'}
+    yolp_search(extra_params)
+  end
+
+  def yolp_auto_complete
+    extra_params = { sort: 'dist'}
+    yolp_search(extra_params)
+  end
+
+  def yolp_category_search
+    extra_params = { gc: Place::CATEGORIES[params[:category].to_sym] }
+    yolp_search(extra_params)
+  end
+
+
+  # uid検索　詳細情報を取得する。
+  def yolp_detail_search
+    place = {
+      appid: ENV['YAHOO_APP_ID'],
+      id: params[:place_id],
+      device: 'mobile',
+      detail: 'full',
+      results: 1,
+      output: 'json'
+    }
+
+    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, place)
+    data = JSON.parse(response.body)
+
+    render json: {
+      id: data['Feature'][0]['Id'],
+      name: data['Feature'][0]['Name'],
+      yomi: data['Feature'][0]&.dig('Property', 'Yomi'),
+      category: data['Feature'][0]['Category'][0],
+      tel: data['Feature'][0]&.dig('Property', 'Tel1'),
+      url: data['Feature'][0]&.dig('Property', 'Detail', 'PcUrl1'), # 修正された行
+      lat: data['Feature'][0]['Geometry']['Coordinates'].split(',')[1],
+      lng: data['Feature'][0]['Geometry']['Coordinates'].split(',')[0],
+      address: data['Feature'][0]&.dig('Property', 'Address'),
+    }
+  end
+
+  YOLP_REVERSE_GEO_CODER_ENDPOINT = 'https://map.yahooapis.jp/geoapi/V1/reverseGeoCoder'.freeze
+
+  # 緯度経度から住所を取得する。
+  def yolp_reverse_geo_coder
+    place_params = {
+      appid: ENV['YAHOO_APP_ID'],
+      lat: params[:lat],
+      lon: params[:lng],
+      output: 'json'
+    }
+
+    response = @conn.get(YOLP_REVERSE_GEO_CODER_ENDPOINT, place_params)
+    data = JSON.parse(response.body)
+
+    feature = data['Feature'][0]
+    render json: {
+      address: feature['Property']['Address'],
+      lat: feature['Geometry']['Coordinates'].split(',')[1],
+      lng: feature['Geometry']['Coordinates'].split(',')[0],
+    }
+  end
+
+  private
+
+  def yolp_search(extra_params)
+    common_params = {
+      appid: ENV['YAHOO_APP_ID'],
+      query: params[:query],
+      device: 'mobile',
+      bbox: params[:west_lng] + ',' + params[:south_lat] + ',' + params[:east_lng] + ',' + params[:north_lat],
+      results: 30,
+      detail: 'simple',
+      lat: params[:center_lat],
+      lon: params[:center_lng],
+      output: 'json'
+    }
+
+    request_params = common_params.merge(extra_params)
+
+    response = @conn.get(YOLP_LOCAL_SEARCH_ENDPOINT, request_params)
+    data = JSON.parse(response.body)
+
+    if data['Feature'].is_a?(Array)
+      places = data['Feature'].map do |place|
+        {
+          id: place['Id'],
+          name: place['Name'],
+          category: place['Category'][0],
+          lat: place['Geometry']['Coordinates'].split(',')[1],
+          lng: place['Geometry']['Coordinates'].split(',')[0],
+        }
+      end
+      render json: places
+    else
+      render json: { error: 'No results found or unexpected response format' }, status: :bad_request
+    end
+  end
 end
 
 =begin
