@@ -79,7 +79,7 @@ class MapsController < ApplicationController
   end
 
   def yolp_category_search
-    extra_params = { gc: params[:category] }
+    extra_params = { gc: Place::CATEGORIES[params[:category].to_sym] }
     yolp_search(extra_params)
   end
 
@@ -88,7 +88,7 @@ class MapsController < ApplicationController
   def yolp_detail_search
     place = {
       appid: ENV['YAHOO_APP_ID'],
-      id: params[:uid],
+      id: params[:place_id],
       device: 'mobile',
       detail: 'full',
       results: 1,
@@ -101,13 +101,13 @@ class MapsController < ApplicationController
     render json: {
       id: data['Feature'][0]['Id'],
       name: data['Feature'][0]['Name'],
-      yomi: data['Feature'][0]['Property']['Yomi'],
+      yomi: data['Feature'][0]&.dig('Property', 'Yomi'),
       category: data['Feature'][0]['Category'][0],
-      tel: data['Feature'][0]['Property']['Tel1'],
-      url: data['Feature'][0]['Detail']['PcUrl1'],
+      tel: data['Feature'][0]&.dig('Property', 'Tel1'),
+      url: data['Feature'][0]&.dig('Property', 'Detail', 'PcUrl1'), # 修正された行
       lat: data['Feature'][0]['Geometry']['Coordinates'].split(',')[1],
       lng: data['Feature'][0]['Geometry']['Coordinates'].split(',')[0],
-      address: data['Feature'][0]['Property']['Address'],
+      address: data['Feature'][0]&.dig('Property', 'Address'),
     }
   end
 
@@ -118,15 +118,18 @@ class MapsController < ApplicationController
     place_params = {
       appid: ENV['YAHOO_APP_ID'],
       lat: params[:lat],
-      lon: params[:lon],
+      lon: params[:lng],
       output: 'json'
     }
 
     response = @conn.get(YOLP_REVERSE_GEO_CODER_ENDPOINT, place_params)
     data = JSON.parse(response.body)
 
+    feature = data['Feature'][0]
     render json: {
-      address: data['Feature'][0]['Property']['Address'],
+      address: feature['Property']['Address'],
+      lat: feature['Geometry']['Coordinates'].split(',')[1],
+      lng: feature['Geometry']['Coordinates'].split(',')[0],
     }
   end
 
