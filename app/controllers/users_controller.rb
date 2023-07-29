@@ -30,11 +30,21 @@ class UsersController < ApplicationController
                             group.as_json.merge(
                               {
                                 prefecture: Prefecture.find_by(prefecture_code: group.prefecture_code)&.name,
-                                city: City.find_by(city_code: group.city_code)&.name
+                                city: City.find_by(city_code: group.city_code)&.name,
+                                members: group.users,
                               }
                             )
                           end,
-                          events: @user.events,
+                          events: @user.events.map do |event|
+                            event.as_json.merge(
+                              {
+                                event_registered_number: event.users.count,
+                                group_joined_number: event.group.users.count,
+                                event_status: event.status_for(@user),
+                                is_online: event.place.nil?,
+                              }
+                            )
+                          end
                         }
                       )
   end
