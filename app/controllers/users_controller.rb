@@ -38,6 +38,8 @@ class UsersController < ApplicationController
                           events: @user.events.map do |event|
                             event.as_json.merge(
                               {
+                                group_name: event.group&.name,
+                                place_name: event.place&.name,
                                 event_registered_number: event.users.count,
                                 group_joined_number: event.group.users.count,
                                 event_status: event.status_for(@user),
@@ -77,7 +79,7 @@ class UsersController < ApplicationController
       User.transaction do
         update_user_with_date(user_params)
         if @user.save
-          render json: { messages: "プロフィールを更新しました。" }, status: :created
+          render json: { message: "プロフィールを更新しました。" }, status: :created
         else
           render json: @user.errors, status: :unprocessable_entity
         end
