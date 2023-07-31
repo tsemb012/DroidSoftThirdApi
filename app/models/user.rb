@@ -1,10 +1,10 @@
 class User < ApplicationRecord
   #before_create :set_uuid
 
-  has_many :participations
+  has_many :participations, dependent: :destroy
   has_many :groups, through: :participations
 
-  has_many :registrations
+  has_many :registrations, dependent: :destroy
   has_many :events, through: :registrations
 
   before_save { self.email = email.downcase }
