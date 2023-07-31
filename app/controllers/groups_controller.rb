@@ -175,7 +175,10 @@ class GroupsController < ApplicationController
                   .where("max_age >= ?", user.age)
                   .where("min_age <= ?", user.age)
                   .where("(groups.is_same_sexuality = false) OR (users.gender = ? OR users.gender = 'no_answer')", user.gender)
-                  .where.not("groups.id IN (?)", user.groups.ids)
+
+    if user.groups.present?
+      groups = groups.where.not("groups.id IN (?)", user.groups.ids)
+    end
 
     if allow_max_number_group_show == true
       groups = groups.group("groups.id")
