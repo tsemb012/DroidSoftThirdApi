@@ -11,6 +11,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def check_is_user_registered
+    user_id = params[:user_id]
+    user = User.find_by(user_id: user_id)
+
+    if user && user.birthday.present? && user.user_name.present?
+      render json: { message: "success" }, status: :ok
+    else
+      render json: { message: "failure" }, status: :not_found
+    end
+  end
+
   # GET /users
   def index
     @users = User.all
