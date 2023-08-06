@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   get 'users' => 'users#index'
+  get 'users/:user_id/check_is_user_registered' => 'users#check_is_user_registered'
   get 'users/:user_id' => 'users#show'
   get 'users/:user_id/groups' => 'users#show_joined_groups'
   get 'users/:user_id/groups/ids' => 'users#show_joined_group_ids'
